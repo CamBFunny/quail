@@ -1,0 +1,130 @@
+https://play.rust-lang.org/?version=nightly&mode=debug&edition=2024&gist=4f10b22959a5c9fc6cd234f295291f92
+
+i32 can be used for most numbers. Try to standardize to this everywhere possible.
+
+fn main() {
+
+    // create character list of n length
+    let n: usize = 5; // Define the desired length of the vector
+    let character_to_repeat: char = 'x'; // The character to fill the vector with
+
+    // Create a Vec<char> with 'n' elements, each initialized to 'character_to_repeat'
+    let char_list: Vec<char> = vec![character_to_repeat; n];
+
+    println!("{:?}", char_list); // Print the resulting vector
+
+    // Join lists into string
+    let words = vec!["Hello", "world", "Rust"];
+    let sentence = words.join(" "); // Combines with a space separator
+    println!("{}", sentence); // Output: Hello world Rust
+
+    let numbers_as_strings = vec![String::from("1"), String::from("2"), String::from("3")];
+    let comma_separated = numbers_as_strings.join(","); // Combines with a comma
+    println!("{}", comma_separated); // Output: 1,2,3
+
+
+    println!("/// Greetings, Rustacean! ///");
+    
+    // ------------------ Formul 1 Data ------------------  //
+    println!("\n// Formula 1 Lists //");   // line space using \n 
+    println!("[labels] Team; Seat1: Pts. / Seat2: Pts.");
+    
+    // let labels = ("Team", "Driver 1", "Pts.", "Driver 2", "Pts."); 
+    let drivers = vec![("McLaren", "Oscar Piastri", 309, "Lando Norris", 275),
+        ("Ferrari", "Charles Leclerc",  151,  "Lewis Hamilton",   109),
+        ("Mercedes", "George Russell",  184,  "Kimi Antonelli",   64),
+        ("Red Bull Racing", "Max Verstappen", 205, "Yuki Tsunoda", 12),
+        ("Williams", "Alexander Albon", 64,  "Carlos Sainz",     16),
+        ("Aston Martin", "Lance Stroll", 32, "Fernando Alonso", 30),
+        ("Racing Bulls", "Liam Lawson", 20, "Isack Hadjar",     37),
+        ("Kick Sauber", "Niko Hulkenberg", 37, "Gabriel Bortoleto", 14),
+        ("Haas", "Esteban Ocon",    28,     "Oliver Bearman",   16),
+        ("Alpine", "Piere Gasly",   20,     "Franco Colapinto", 0),
+        ("Cadillac ('26)", "Sergio Perez",  0,  "Kimi Antonelli",   0)
+    ]; 
+     
+    for ix in drivers { // Iterates from 1 to n (inclusive)
+        println!("\nTeam {}", ix.0);
+        println!("{}: {} / {}: {}", ix.1, ix.2, ix.3, ix.4);    // index tuples with tuple.0.1
+    }
+    
+    
+    
+    // --------------------- Data Types ---------------------  // 
+    println!("\n// Data Types //"); 
+    let x: i32 = -123;   // i32 max value: +/- 2147483647
+    let y: u64 = 420;   // u64 max value: 9223372036854775807 (positive only)
+    println!("Signed Integer: {}", x);
+    println!("Unsigned Integer: {}", y);
+    
+    // Exponent example
+    let exp: u32 = 3;  // exponents must be u32 type
+    let big_number = y.pow(exp);
+    // Printing multiple variables in a string
+    println!("{} raised to the power of {} = {}", y, exp, big_number); 
+    
+    // .powf() - float-type exponent function
+    let float_num: f64 = 1.7;
+    let exp2: f64 = 3.1;
+    let result = float_num.powf(exp2);  // both must be f64 type
+    println!("Float-type exponent: {}^{} = {}", float_num, exp2, result);
+    
+    // Cameron's Rust-Rounding Code //
+    let decimal_place: f64 = 2.0;   // decimal places to round to
+    let mut rounder: f64 = 10.0;    // mutible rounding coefficient
+    rounder = rounder.powf(decimal_place);  // multiple coeff by decimal places
+    let multiplied = (result*rounder).round(); // must be same type to multiply
+    let round_d2 = multiplied/rounder;  // move decimal place to original spot
+    println!("Rounded to two decimal places: {}", round_d2);
+    
+    // Boolean type
+    let is_running: bool = true;
+    // Character type
+    let letter: char = 'a';
+    println!("Bool: {} & character: {}", is_running, letter);
+    
+    
+    // ------------------ Lists and Arrays ------------------  //
+    // Array type
+    let num_array: [i32;5] = [1,2,3,4,5];
+    println!("Number array: {:?}", num_array);  // ':?' needed for array
+    
+    // Slices// 
+    let slice = &num_array[0..3];   // Slice of elements start..length
+    println!("Array slice: {:?}", slice); // Output: [2, 3, 4]
+    
+    // Tuples //
+    // Tuple with compound data types
+    let list_type = ("text", 123, false, num_array); 
+    println!("Compound tuple: {:?}", list_type);
+    
+    
+    // Tuple type definition on creation (line below)
+    // let list_type: (string, i32, bool) = ("text", 123, false);
+    
+    // Multiline text example
+    let multiline_string = r#"  
+                               ▒▒▒  ▒▒▒   ▒▒▒                              
+                          ▒▒▒  ▒▓▓▒▒▒▓▓▒▒▒▓▓▒ ▓▒▒▒                         
+                      ▒▒  ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▓▓▒  ▒▒                     
+                     ▒▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▓▒                     
+     ▒▒           ▒▒ ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒  ▒▒        ▒▒▒   ▒▒ 
+  ▒▒  ▒▒▒▒       ▒▓▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒      ▒▒▓▓▒   ▓▒▒
+ ▒▓▒▓ ▒▓▓▓▒       ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒     ▒▓▓▓▓▒  ▒▓▓▒
+▒▓▓▓▒▓▒▓▓▓▒▒  ▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒ ▒▓▓▓▓▒▒▒▓▓▒ 
+ ▒▓▓▓▓▓▓▓▓▓▓   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒  ▓▓▓▓▓▓▓▒▒  
+  ▒▒▒▓▓▓▓▓▓ ▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███▒▒▓▓▓▓▓▓███▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒    
+    ▓▒▓▓▓▒ █▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██░███▒▓▓▓▓██░██▓▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ ▓▓▒▒      
+       ▒▓▓▒▓ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█░░░███▒▓▓▒█░░░███▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒        
+        ▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███████▒▓▓▒███████▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓         
+          ▒▓▓▓▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▒██████▒▓▓▓▒█████▓▒▓▓▓▓▓▓▓▓▓▒▒▒▒▒▓▓▓▒        
+        ░▒▓▓▓▓███▓▒▒▒▒▒▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▒▒▓█████▓▓▓▒▒       
+         ▒▓▓▓▒ ███████▓▒▓▒▒▒▒▒▒▒▒▒▓▓▒█████▒▓▒▒▒▒▒▒▒▒▓▓████  ▓██▒▓▓▒        
+           ▒▓▓▒ ██▓     ████████▓▓▒▒▒▒▒▒▒▒▒▓▓███████▓      ▓▓ ▒▓▓▒         
+            ▒▒▒▒  █▓                                      ▓█  ▒▒▒          
+              ▒▒▒▒ ▓▓                                    ▓▓ ▒▒▒▒           
+                ▒▒▒                                         ▒▒             
+                  ▒                                         ▒          
+"#;
+    println!("{}", multiline_string);
+}

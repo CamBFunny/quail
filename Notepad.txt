@@ -1,0 +1,65 @@
+New game idea!
+CSR Racing except a bigger focus on tuning and swapping parts. Parts can be upkept, but eventually there durability will lower enough to make you need to buy a replacement.
+
+Stellar 2170
+
+Space Mafia Game
+Smuggle biotech, quantum computers, historical artifacts, engineered microbes, Earth biosphere samples,
+ seeds, embryonic livestock, and luxury goods liike wine & coffee.
+
+Run businesses legit, or turn them into breeding dens for debauchery. Recruit soldiers, hire muscle, promote capos,
+and discipline bad actors.
+
+
+
+~~ TRACK COACH ~~
+Dirt track has a lacrosse field in the middle of it
+Basic outdoor track has a turf field in the middle of it
+upgraded Outdoor facility has field events inside the circle
+
+~~ GREAT LAKES ~~
+issues
+ctrl+click to pickup 10g from dealer isn't working
+Change dealers to just slow down after 8 failed cycles, not completely stop
+
+to do
+make ports request certain bricks from time to time that they'll pay 150% for. or they are trying to sell some for 50% off.
+
+add hometown map v1
+add clothing store
+add car dealership and mechanics (faster when on road, deal to all 4 corners at once with deal speed 70%)
+At end of demo, you get a point on Vlad's package. This is a monthly cash infusion of $1,000 plus 1kg of each product.
+Make your inventory affect supply, which will make more customers spawn and decrease price. Every 500g in your inventory increases supply by 1.
+
+// Stocks //
+10 companies for you to invest. Refresh weekly.
+Negroroca (Blackrock)
+Green.Bean
+
+// Charts //
+Log all Lords net worth, product prices, stock prices, and stock at ports each week
+Log monthly averages
+Report Rolling Yearly Average (Updates weekly)
+
+// Blacklist //
+Trap Lords net worth, your goal is to make it to the top over Slick.
+Starting net worth for blacklist. Play for this long then write down my net worth
+Dealer / time / Guess / Actual
+Marsrhall  5min   $10k
+Rich Sack  10min  $25k
+Slick    15min  $50k
+Every week, simulate the blacklist's net worth changing. They are most likely to stay the sasme, but they favor increasing by 0.5% or 1% each week.
+*= random.choice([0.98, 0.99, 1.00, 1.00, 1.00, 1.005, 1.005, 1.01, 1.01, 1.02)
+
+lore
+Lords get a point on the package
+
+Vampires can't use smart phones. If they were tracked 24/7 the entire order would be exposed. The biometric data alone would tip off the NSA of a supernatural user.
+that's a bit confusing?
+we live in the shadows, we don't write everything in a diary. vampire history is less of a stream and more of a puddle.
+
+Vampires have all memories from their human life, but they are cold blooded reptiles who don't care to think about it. The only thing that makes vampires remember their pre birth is seeing someone they remember or experiencing a sensation that brings back vivid memories.
+
+Triggering flashbacks makes vampires feel human emotions associated with those memories. Most vampires recommend avoiding these flashbacks to keep your mind clear and focused.
+
+
