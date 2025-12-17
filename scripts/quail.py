@@ -57,5 +57,3 @@ with open(file_path, 'a') as file:  # a - add new line
 with open(file_path, 'r') as file:
     content = file.read() # Reads the entire file content into a single string
     print(content)
-
-print()
