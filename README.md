@@ -1,2 +1,2 @@
 # quail
-Dumping grounds for quail programming
+Hub for quail programming, helpful files, and fun projects!
