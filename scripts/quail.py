@@ -1,25 +1,32 @@
 import time
 
 t = time.localtime(time.time())
-print(t)
 localtime = time.asctime(t)
 str = f"Current Time: {localtime}\n"
 file_path = 'quail.txt'
 with open(file_path, 'w') as file:  # w - write over file
     file.write(str)
 
-num = int(input('Number: '))
-size = num*2 - 1
-for i in range(size):
-    if i < num:
-        string = ['//Python'] * (i+1) + ['//\n']
-    elif num <= i < size-1:
-        string = ['//Python'] * (num*2 - i - 1) + ['//\n']
-    else:
-        string = ['//Python'] * (num*2 - i - 1) + ['//']
-    string = ''.join(string)
-    with open(file_path, 'a') as file:  # a - add new line
-        file.write(string)
+max = int(input('Number: '))
+while max > 20:
+    max = int(max/10)
+print(f"Pyramids: {max}")
+
+for j in range(max):
+    num = j + 2
+    size = num*2 - 1
+    for i in range(size-1):
+        if i < num:
+            string = ['//Python'] * (i+1) + ['//\n']
+        elif num <= i < size-1:
+            string = ['//Python'] * (num*2 - i - 1) + ['//\n']
+        string = ''.join(string)
+        with open(file_path, 'a') as file:  # a - add new line
+            file.write(string)
+
+string = '//Python//'
+with open(file_path, 'a') as file:  # a - add new line
+    file.write(string)
 
 from ascii_quail import *
 
