@@ -8,8 +8,7 @@ file_path = 'quail.txt'
 with open(file_path, 'w') as file:  # w - write over file
     file.write(str)
 
-num = 5
-# num = int(input('Number: '))
+num = int(input('Number: '))
 size = num*2 - 1
 for i in range(size):
     if i < num:
