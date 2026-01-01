@@ -1,0 +1,289 @@
+Scratch pad for notes
+
+linux rulz
+
+                           .'.......'.                            
+                         ..            '                          
+                                    O,                            
+                                         .                        
+                          .c:    lkxc                             
+                          OcOd  xK:kKx                            
+                          x ,k:,kc  oN                            
+                          ck000000koc,    .                       
+                          :O00000kxddd                            
+                          . lolooollKl  dd  .                     
+                       . 'Ml ...:OWMMMo      .                    
+                      . 'WMMNkONMMMMMMMk      .                   
+                    .   WMMMMMMMMMMMMMMM;  '   ..                 
+                   ..   MMMMMMMMMMMMMMMMN.  o'   .                
+                  . , .NMMMMMMMMMMMMMMMMMW'  l;   .               
+                 .   .WMMMMMMMMMMMMMMMMMMMW.  x.   .              
+                . .  KMMMMMMMMMMMMMMMMMMMMMl  .o                  
+               .  c .MMMMMMMMMMMMMMMMMMMMMMd  .c    .             
+                  o ,MMMMMMMMMMMMMMMMMMMMMMk .k'                  
+               .'..oOMMMMMMMMMMMMMMMMMMMMMMO.  ..                 
+              ,000O,.dWMMMMMMMMMMMMMMMMMM:cl       ,'             
+         ',,,.c00000d. :KMMMMMMMMMMMMMMMM,00o.  'l00c             
+         ckxxO00000000,  .dMMMMMMMMMMMMMM'0000000000o .           
+         .0000000000000l   0MMMMMMMMMMM0N k0000000000d;;,.        
+          d0000000000000k'XXMMMMMMMMMK, k d0000000000000x         
+        .:000000000000000k.k';cllc;'   .O O00000000Od'            
+            :oxO000000000O ,.          ', 000000k;                
+                   .:looc                  :oo:.                  
+                                                               
+
+How to make Python quicker:
+
+There are several ways to optimize your Python code to make it run faster. Here 
+are some suggestions:
+
+1. **Use NumPy**: If you're working with numerical computations, consider using 
+the NumPy library. NumPy provides support for large, multi-dimensional arrays 
+and matrices, and is designed to do this in a highly efficient way.
+2. **Profile your code**: Use tools like `cProfile` or `line_profiler` to 
+identify which parts of your code are taking the most time. This will help you 
+focus on optimizing the bottlenecks.
+3. **Use just-in-time (JIT) compilers**: Python has several JIT compilers that 
+can speed up performance-critical code, such as:
+	* Numba: A just-in-time compiler for NumPy and SciPy code.
+	* Cython: A superset of the Python language that allows you to write fast, co
+compiled CPython code.
+4. **Optimize loops**: Loops are often a bottleneck in Python code. Consider 
+using more efficient looping constructs, such as:
+	* `numpy.vectorize()`: For applying a function element-wise to a NumPy array.
+	* `itertools`: A library for working with iterators and improving performance.
+5. **Avoid unnecessary work**: Make sure your code isn't doing unnecessary 
+work. For example:
+	* Avoid creating unnecessary objects or variables.
+	* Use ` caching` or memoization to avoid recalculating the same results multi
+multiple times.
+6. **Use parallel processing**: If you have a multi-core CPU, consider using 
+parallel processing libraries like:
+	* ` joblib`: A library for lightweight parallelism and concurrency.
+	* `dask`: A library for parallelizing existing serial code.
+7. **Use memory-efficient data structures**: Use data structures that are 
+optimized for memory usage, such as:
+	* `pandas.DataFrame` instead of a Python list or dictionary.
+	* `numpy.ndarray` instead of a Python list or tuple.
+8. **Reduce function calls**: Function calls can be expensive in Python. 
+Consider:
+	* Inlining small functions to reduce the number of calls.
+	* Using generators or iterators instead of recursive functions.
+9. **Use C extensions**: If you have performance-critical code, consider 
+writing it as a C extension using tools like:
+	* `ctypes`: A foreign function library for Python that allows you to call C f
+functions from Python.
+	* `cffi`: A foreign function interface for Python and C that allows you to call 
+C functions from Python.
+10. **Use the latest Python version**: Make sure you're running the latest 
+version of Python, as newer versions often include performance optimizations.
+
+Remember to test your optimized code thoroughly to ensure it still works 
+correctly and doesn't introduce new bugs!
+
+Okay, let’s dive into strategies for making your Python code run faster. Python 
+is known for its readability and ease of use, but it can sometimes be slower 
+than compiled languages like C++ or Java. Here’s a breakdown of techniques, 
+categorized by effort and impact:
+
+**1. Profiling & Identifying Bottlenecks (Low Effort - High Impact)**
+
+*   **`cProfile`:** This is your first step. It accurately measures the time 
+spent in each function.  Use it to pinpoint the functions that are consuming 
+the most time.
+    ```python
+    import cProfile
+
+    def my_slow_function():
+        # Your code here
+        pass
+
+    cProfile.run('my_slow_function()')
+    ```
+*   **`line_profiler`:**  Goes deeper than `cProfile`, measuring the time spent 
+on *each line* of your code. Requires installing the package (`pip install 
+line_profiler`).
+    ```python
+    # Decorate the function you want to profile
+    @profile
+    def my_function():
+        # Your code here
+        pass
+
+    # Run the profiler
+    # kernprof -l your_script.py
+    # python -m line_profiler your_script.py.lprof
+    ```
+
+**2. Algorithm & Data Structure Optimization (Medium Effort - High Impact)**
+
+*   **Choose the right algorithm:** The most significant speed improvements 
+often come from selecting an algorithm that’s appropriate for the problem.  For 
+example, searching a sorted list using a linear scan (O(n)) is much slower than 
+using binary search (O(log n)).
+*   **Data Structures:**
+    *   **Lists vs. Arrays:** Python lists are dynamic and have overhead. If 
+you need to perform many numerical operations, consider using NumPy arrays 
+(which are optimized for numerical computations).
+    *   **Dictionaries:** Use dictionaries for fast lookups (O(1) average case) 
+instead of iterating through lists.
+
+**3.  NumPy & SciPy (Medium Effort - High Impact)**
+
+*   **Vectorization:**  NumPy’s strength is vectorized operations. Instead of 
+looping through elements in a list, use NumPy functions that operate on entire 
+arrays at once.
+*   **SciPy:**  Provides optimized algorithms for scientific computing (linear 
+algebra, signal processing, etc.).
+
+**4.  Code Optimization Techniques (Medium Effort - Moderate Impact)**
+
+*   **Loop Optimization:**
+    *   **Minimize calculations within loops:** Move calculations that don’t 
+depend on the loop variable *outside* the loop.
+    *   **Use list comprehensions or generator expressions:**  These are often 
+faster than traditional `for` loops for creating lists.
+    *   **Avoid unnecessary function calls within loops:**  Inline simple 
+calculations if possible.
+*   **String Concatenation:**  Use `join()` for building strings from lists of 
+strings instead of repeated `+` operations.
+*   **Caching:** If a function is called repeatedly with the same arguments, 
+store the results in a cache to avoid recomputation. (Use a dictionary or 
+decorator)
+
+**5.  Parallelization & Concurrency (High Effort - High Impact)**
+
+*   **Multiprocessing:**  Use the `multiprocessing` module to run tasks in 
+parallel on multiple CPU cores.
+*   **Threading:**  Use the `threading` module for concurrent execution of 
+tasks, but be aware of Python’s Global Interpreter Lock (GIL), which limits 
+true parallelism for CPU-bound tasks.
+*   **Asynchronous Programming (asyncio):**  Use `asyncio` for I/O-bound tasks 
+(e.g., network requests) to avoid blocking the main thread.
+
+**6.  External Libraries (Variable Effort - Variable Impact)**
+
+*   **Cython:**  Allows you to write Python code that is compiled to C, 
+providing significant performance improvements.
+*   **Numba:** A just-in-time (JIT) compiler that can accelerate numerical 
+Python code.
+*   **PyPy:** An alternative Python interpreter that uses a JIT compiler.
+
+**General Tips:**
+
+*   **Reduce memory allocations:** Frequent memory allocations can be slow.  
+Reuse objects when possible.
+*   **Use efficient data types:**  Choose the most appropriate data type for 
+your data.
+*   **Keep your code clean and readable:**  Well-structured code is easier to 
+optimize.
+
+**Resources:**
+
+*   **Real Python:** [https://realpython.com/](https://realpython.com/) – 
+Excellent tutorials on Python performance.
+*   **Python Performance Blog:** 
+[https://pythonperformance.blogspot.com/](https://pythonperformance.blogspot.com[https://pythonperformance.blogspot.com/](https//pythonperformance.blogspot.com/)
+*   **Stack Overflow:** 
+[https://stackoverflow.com/](https://stackoverflow.com/)
+
+
+# Platformer storytelling
+
+1. **Environmental Storytelling**: The environment is often designed to tell 
+part of the story. For example, abandoned cities, overgrown ruins, or 
+mysterious forests can convey a sense of history and narrative context.
+2. **Character Design**: Well-designed characters, including the protagonist's 
+appearance, movements, and animations, help players connect emotionally with 
+them. This can be achieved through expressive facial expressions, varied body 
+language, and a clear character backstory.
+3. **Sound Design**: Sound effects, music, and voice acting are crucial in 
+creating an immersive experience. For example, a haunting melody can set the 
+mood for a creepy level, while a protagonist's dialogue can provide context and 
+motivation for their actions.
+4. **Level Structure**: Carefully designed levels can reflect the story's 
+themes and tone. For instance, a level with a sense of urgency might feature 
+fast-paced platforming and increasing difficulty, mirroring the character's 
+desperation to escape a danger zone.
+5. **Power-Ups and Upgrades**: Power-ups or upgrades that grant new abilities 
+or enhance existing ones can serve as narrative progression markers. This 
+mechanic allows players to feel empowered and connected to the story as they 
+progress through the game.
+6. **Cutscenes and Cinematics**: Brief, well-crafted cutscenes or cinematics 
+can provide crucial information about the world, characters, or plot. These 
+breaks from gameplay can help establish a sense of continuity and immersion.
+7. **Dynamic Interactions**: Interactive elements like NPC conversations, 
+environmental puzzles, or platforming challenges that require specific skills 
+can engage players and make them feel invested in the story.
+8. **Emotional Resonance**: By creating emotional connections between the 
+player and the protagonist (or other characters), developers can elicit empathy 
+and attachment. This might be achieved through character development, 
+backstory, or relatable motivations.
+9. **Mystery and Exploration**: Games that encourage exploration and discovery 
+can create a sense of wonder and curiosity, drawing players into the world and 
+its mysteries.
+10. **Thematic Relevance**: Level themes, enemy designs, and even boss battles 
+can reflect the game's narrative themes, such as exploring the consequences of 
+war or the power of friendship.
+
+By incorporating these mechanics, platformer game developers can create an 
+immersive experience that draws players into the story and keeps them engaged 
+throughout the game.
+
+
+
+
+                                                                                                                    
+                                                      ';;;;.                                                        
+                                                ...            ..'.                                                 
+                                              '                    .'                                               
+                                             .                 .;     .                                             
+                                            .                  KNO'    .                                            
+                                           .                   .        .                                           
+                                                                                                                    
+                                                            ..                                                      
+                                              .xK0o       xWMMMNx                                                   
+                                             'MKkXMK     XMW0k0WMK                                                  
+                                             ol .cdM.   ;MN. 'd;0Ml                                                 
+                                             :k  :.N:...;MO    ,kMO                                                 
+                                              K0.:lo000kl0Kc.   0X,                                                 
+                                              'd0000000000000Odl;.        .                                         
+                                             ;00000000000000000xx0c                                                 
+                                              'd00000000000kocc:x0.   .    .                                        
+                                                'ldddoc:;cldOOocKk    Kkc.  .                                       
+                                           .  ,  :oooodO0ko;.,l0MW.    lKc   .                                      
+                                          .  lM0  .,::,.  :OWMMMMMW;          .                                     
+                                        .   ,MMMN:     'kMMMMMMMMMMMk           .                                   
+                                       .   ;WMMMMMNkkOXMMMMMMMMMMMMMMk           .                                  
+                                     ..   ,MMMMMMMMMMMMMMMMMMMMMMMMMMM:           .                                 
+                                    .     0MMMMMMMMMMMMMMMMMMMMMMMMMMMN    .;       .                               
+                                  ..      KMMMMMMMMMMMMMMMMMMMMMMMMMMMMd    .0:      ..                             
+                                 .  ;.   .NMMMMMMMMMMMMMMMMMMMMMMMMMMMMMx     kk       .                            
+                                .  cx   ,WMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMO     dK.      .                           
+                                   .   :MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM0     lX       .                          
+                               .      ,MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMx     x0                                 
+                              .      .WMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.     M;      .                         
+                             .  .    0MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc     Ox       .                        
+                            .  .x   .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMd     ox                                
+                           .   :c   cMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMx     d:                                
+                          .    :l   xMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMd     X         .                       
+                                K.  kMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMK...;X0,                                
+                                .0x,0MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWd,.. .'c'                              
+                          ::dxo;  ;KMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMK0l                                       
+                         ,0000000c  'OMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMk ,cl                                       
+                        . 00000000O'  .dWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.:000,          ,k0Ol.                      
+                      '. c0000000000o    cKMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.d0000o.     .cO0000.                       
+               ..;;,'..,d000000000000O.    .dNMMMMMMMMMMMMMMMMMMMMMMMMMM.d000000Oxxk00000000.                       
+                d0000000000000000000000c      :NMMMMMMMMMMMMMMMMMMMMMMMM.;000000000000000000o  '                    
+                .O0000000000000000000000d      .MMMMMMMMMMMMMMMMMMMMMMMM. 0000000000000000000o.  ..                 
+                 .00000000000000000000000O'    ;MMMMMMMMMMMMMMMMMMMMNloM  d00000000000000000000Odl;..               
+                  O000000000000000000000000c oXMMMMMMMMMMMMMMMMMMMMx   M  l0000000000000000000000000.               
+               . .00000000000000000000000000o.KWcxWMMMMMMMMMMMMMKo.   lN  x00000000000000000000000x                 
+                'O000000000000000000000000000; dN, ,loddddol:,.       Wx  0000000000000000000ko:                    
+                dO000000000000000000000000000d  kX                   ;M, .00000000000000kc'.                        
+                   .';coxO0000000000000000000:  :c                   .O  .00000000000O:.                            
+                            .,:ldk0000000000o                             .k0000000o'                               
+                                    .,;cc:,.                                .,::;.                                  
+                                                                                                                    
+                                                                                                                    
+                                                      
