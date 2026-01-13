@@ -10,7 +10,7 @@ def say(text):
     engine.runAndWait()
 
 # RATE
-rate = 190
+rate = 180
 engine.setProperty('rate', rate)
 
 # VOLUME
@@ -20,8 +20,7 @@ say(f"Hello, Cameron! I am Python {version[:6]}!")
 say('My current speaking rate is ' + str(rate))
 engine.stop()
 
-# Saving Voice to a file
-# On Linux, make sure that 'espeak-ng' is installed
-engine.save_to_file('This file was saved', 'test.mp3')
-engine.runAndWait()
-playsound.playsound('test.mp3')
+# # Saving Voice to a file
+# engine.save_to_file('', 'test.mp3')
+# engine.runAndWait()
+# playsound.playsound('test.mp3')
