@@ -17,5 +17,6 @@ The moral is: Truth, wholesomeness and compassion can save the world.\
 
 
 Design
-<img width="2113" height="1622" alt="image" src="https://github.com/user-attachments/assets/e9490013-b937-4183-aaae-32dea552bd35" />
+<img width="1029" height="610" alt="image" src="https://github.com/user-attachments/assets/5b1a7d7f-3ffe-48f6-af51-28950a56ffee" />
+
 
