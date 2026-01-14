@@ -5,6 +5,7 @@ Hub for quail programming, helpful files, and fun projects!\
 Welcome to the FOSS future.
 
 ## Purpose
+Bring man and computer together in harmony.
 
 ### The Baby Quail Who Could Not Fly Away [[The Power of Truth, Wholesomeness and Compassion]](https://www.buddhanet.net/e-learning/buddhism/bt1_37/)
 *Then the Great Being within the tiny baby quail thought,\
