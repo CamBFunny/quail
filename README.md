@@ -14,3 +14,7 @@ May all birds and other beings, who are still trapped by the fire, be saved. And
 
 The moral is: Truth, wholesomeness and compassion can save the world.\
 <img width="350" height="358" alt="image" src="https://github.com/user-attachments/assets/949acab9-0d13-41f4-ae7c-6ff3bac2d9ab" />
+
+
+Design
+<img width="2113" height="1622" alt="image" src="https://github.com/user-attachments/assets/8c493a73-eff1-4c7a-884f-a5549c314943" />
