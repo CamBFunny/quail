@@ -20,5 +20,5 @@ The moral is: Truth, wholesomeness and compassion can save the world.\
 Design
 <img width="1029" height="610" alt="image" src="https://github.com/user-attachments/assets/5b1a7d7f-3ffe-48f6-af51-28950a56ffee" />
 
-quail \
+### Quail 
 ![alt_text](lib/ql.png)
