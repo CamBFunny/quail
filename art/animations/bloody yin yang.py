@@ -26,8 +26,12 @@ grid_size = [resolution[0] // size, resolution[1] // size]
 box = [[0] * grid_size[1]] * grid_size[0]
 half = grid_size[0] // 2
 
-for n in range(half):
-    box[n + half] = [1] * grid_size[1]
+for n in range(grid_size[0]):
+  if n < half:
+    map = 0
+  else:
+    map = 1
+  box[n] = [map] * grid_size[1]
 
 while running:  # Game Loop
     for event in pygame.event.get():
@@ -47,8 +51,8 @@ while running:  # Game Loop
             if box[n][m] == 0:
                 color = (0, 0, 0)
                 if abs(boundary[0] - location[0]) < size and abs(boundary[1] - location[1]) < size and speed_x < 0:
-                    #box[n][m] = 1
-                    speed_x = -speed_x 
+                    box[n][m] = 1
+                    speed_x = -speed_x  
             elif box[n][m] == 1:
                 color = (255, 255, 255)
                 if abs(boundary[0] - position[0]) < size and abs(boundary[1] - position[1]) < size and rate_x > 0:
