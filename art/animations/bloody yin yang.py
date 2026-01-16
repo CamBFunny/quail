@@ -9,7 +9,7 @@ framerate = 60
 dt = 0
 
 size = 25
-rate = 500
+rate = 400
 LeftClick = False
 button_check = False
 
@@ -110,9 +110,9 @@ while running:  # Game Loop
         button_check = False
 
     if state < 3:
-      mod = 1.0005
+      mod = 1.0007
     else:
-      mod = .9995
+      mod = .9993
     rate_x *= mod
     rate_y *= mod
     speed_x *= mod
