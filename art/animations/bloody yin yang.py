@@ -9,7 +9,7 @@ framerate = 60
 dt = 0
 
 size = 25
-rate = 400
+rate = 500
 LeftClick = False
 button_check = False
 
@@ -27,7 +27,7 @@ box = [[0] * grid_size[1]] * grid_size[0]
 half = grid_size[0] // 2
 
 blood = 0
-state = 0
+state = 0 
 
 for n in range(grid_size[0]):
   if n < half:
@@ -123,7 +123,11 @@ while running:  # Game Loop
       blood = 0
       state += 1
       if state > 5:
-        state = 0
+        state = 0  
+        rate_x = rate * rate_x / abs(rate_x)
+        rate_y = rate * rate_y / abs(rate_y) 
+        speed_x = -rate * speed_x / abs(speed_x)
+        speed_y = -rate * speed_x / abs(speed_x)
 
     pygame.display.update()
     dt = clock.tick(framerate) / 1000	# Makes movement or time-related events work independent of framerate
