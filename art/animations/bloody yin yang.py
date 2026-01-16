@@ -93,6 +93,8 @@ while running:  # Game Loop
     mod = 1.0002
     rate_x *= mod
     rate_y *= mod
+    speed_x *= mod
+    speed_y *= mod
 
     pygame.display.update()
     dt = clock.tick(framerate) / 1000	# Makes movement or time-related events work independent of framerate
