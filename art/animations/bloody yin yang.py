@@ -109,13 +109,16 @@ while running:  # Game Loop
     if event.type == pygame.MOUSEBUTTONUP:
         button_check = False
 
-    mod = 1.0005
+    if state < 3:
+      mod = 1.0005
+    else:
+      mod = .9995
     rate_x *= mod
     rate_y *= mod
     speed_x *= mod
     speed_y *= mod
     
-    blood += 50*dt
+    blood += 20*dt
     if blood >= 255:
       blood = 0
       state += 1
