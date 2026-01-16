@@ -47,13 +47,13 @@ while running:  # Game Loop
             if box[n][m] == 0:
                 color = (0, 0, 0)
                 if abs(boundary[0] - location[0]) < size and abs(boundary[1] - location[1]) < size and speed_x < 0:
-                    box[n][m] = 1
+                    #box[n][m] = 1
                     speed_x = -speed_x 
             elif box[n][m] == 1:
                 color = (255, 255, 255)
                 if abs(boundary[0] - position[0]) < size and abs(boundary[1] - position[1]) < size and rate_x > 0:
                     box[n][m] = 0
-                    rate_x = -rate_x 
+                    rate_x = -rate_x
             pygame.draw.rect(screen, color, (n*size, m*size, size, size))
 
     if position[0] + size >= screen.get_width() and rate_x > 0:
