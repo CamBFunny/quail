@@ -71,4 +71,5 @@ while running:  # Game Loop
     pygame.display.update()
     dt = clock.tick(framerate) / 1000	# Makes movement or time-related events work independent of framerate
     clock.tick(framerate)         	# Sets frames/sec
+
 pygame.quit()
