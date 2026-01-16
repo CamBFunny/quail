@@ -8,8 +8,8 @@ clock = pygame.time.Clock()
 framerate = 60
 dt = 0
 
-size = 40
-rate = 350
+size = 25
+rate = 400
 LeftClick = False
 button_check = False
 
@@ -26,6 +26,8 @@ grid_size = [resolution[0] // size, resolution[1] // size]
 box = [[0] * grid_size[1]] * grid_size[0]
 half = grid_size[0] // 2
 
+blood = 0
+
 for n in range(grid_size[0]):
   if n < half:
     map = 0
@@ -41,9 +43,6 @@ while running:  # Game Loop
     if LeftClick:
         LeftClick = False
         button_check = True
-
-    screen.fill((0, 0, 0))
-    pygame.draw.rect(screen, (255, 255, 255), (resolution[0]/2, 0, resolution[0], resolution[1]))
 
     for n in range(grid_size[0]):
         for m in range(grid_size[1]):
@@ -90,7 +89,7 @@ while running:  # Game Loop
     if event.type == pygame.MOUSEBUTTONUP:
         button_check = False
 
-    mod = 1.0002
+    mod = 1.0005
     rate_x *= mod
     rate_y *= mod
     speed_x *= mod
