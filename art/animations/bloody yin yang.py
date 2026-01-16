@@ -27,6 +27,7 @@ box = [[0] * grid_size[1]] * grid_size[0]
 half = grid_size[0] // 2
 
 blood = 0
+state = 0
 
 for n in range(grid_size[0]):
   if n < half:
@@ -43,17 +44,36 @@ while running:  # Game Loop
     if LeftClick:
         LeftClick = False
         button_check = True
-
+        
+    if state == 0:
+      yin = (255, 255 - blood, 255 - blood)
+      yang = (0, 0, 0)
+    elif state == 1:
+      yin = (255, 0, 0)
+      yang = (0 + blood, 0 + blood, 0 + blood)
+    elif state == 2:
+      yin = (255 - blood, 0, 0)
+      yang = (255, 255, 255)
+    elif state == 3:
+      yin = (0, 0, 0)
+      yang = (255, 255 - blood, 255 - blood)
+    elif state == 4:
+      yin = (0 + blood, 0 + blood, 0 + blood)
+      yang = (255, 0, 0)
+    elif state == 5:
+      yin = (255, 255, 255)
+      yang = (255 - blood, 0, 0)
+      
     for n in range(grid_size[0]):
         for m in range(grid_size[1]):
             boundary = [n*size, m*size]
             if box[n][m] == 0:
-                color = (0, 0, 0)
+                color = yang
                 if abs(boundary[0] - location[0]) < size and abs(boundary[1] - location[1]) < size and speed_x < 0:
                     box[n][m] = 1
                     speed_x = -speed_x  
             elif box[n][m] == 1:
-                color = (255, 255, 255)
+                color = yin
                 if abs(boundary[0] - position[0]) < size and abs(boundary[1] - position[1]) < size and rate_x > 0:
                     box[n][m] = 0
                     rate_x = -rate_x
@@ -80,11 +100,11 @@ while running:  # Game Loop
 
     position[0] += dt * rate_x
     position[1] += dt * rate_y
-    pygame.draw.rect(screen, (255, 255, 255), (position[0], position[1], size, size))
+    pygame.draw.rect(screen, yin, (position[0], position[1], size, size))
     
     location[0] += dt * speed_x
     location[1] += dt * speed_y
-    pygame.draw.rect(screen, (0, 0, 0), (location[0], location[1], size, size))
+    pygame.draw.rect(screen, yang, (location[0], location[1], size, size))
 
     if event.type == pygame.MOUSEBUTTONUP:
         button_check = False
@@ -94,6 +114,13 @@ while running:  # Game Loop
     rate_y *= mod
     speed_x *= mod
     speed_y *= mod
+    
+    blood += 50*dt
+    if blood >= 255:
+      blood = 0
+      state += 1
+      if state > 5:
+        state = 0
 
     pygame.display.update()
     dt = clock.tick(framerate) / 1000	# Makes movement or time-related events work independent of framerate
