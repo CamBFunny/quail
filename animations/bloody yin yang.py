@@ -87,7 +87,6 @@ while running:  # Game Loop
         rate_y = -rate_y
     if position[1] <= 0 and rate_y < 0:
         rate_y = -rate_y
-        
 
     if location[0] + size >= screen.get_width() and speed_x > 0:
         speed_x = -speed_x
