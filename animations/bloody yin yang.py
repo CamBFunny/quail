@@ -9,7 +9,7 @@ framerate = 60
 dt = 0
 
 size = 25
-rate = 400
+rate = 700
 LeftClick = False
 button_check = False
 
@@ -20,7 +20,6 @@ rate_y = rate
 location = [resolution[0]-size, random.choice(range(resolution[1]))]
 speed_x = -rate
 speed_y = -rate
-
 
 grid_size = [resolution[0] // size, resolution[1] // size]
 box = [[0] * grid_size[1]] * grid_size[0]
@@ -63,15 +62,15 @@ while running:  # Game Loop
     elif state == 5:
       yin = (255, 255, 255)
       yang = (255 - blood, 0, 0)
-      
+
     for n in range(grid_size[0]):
         for m in range(grid_size[1]):
             boundary = [n*size, m*size]
             if box[n][m] == 0:
                 color = yang
-                if abs(boundary[0] - location[0]) < size and abs(boundary[1] - location[1]) < size and speed_x < 0:
+                if abs(boundary[0] - location[0]) < size + 5 and abs(boundary[1] - location[1]) < size and speed_x < 0:
                     box[n][m] = 1
-                    speed_x = -speed_x  
+                    speed_x = -speed_x
             elif box[n][m] == 1:
                 color = yin
                 if abs(boundary[0] - position[0]) < size and abs(boundary[1] - position[1]) < size and rate_x > 0:
@@ -109,15 +108,15 @@ while running:  # Game Loop
         button_check = False
 
     if state < 3:
-      mod = 1.0007
+      mod = 1.001
     else:
-      mod = .9993
+      mod = .999
     rate_x *= mod
     rate_y *= mod
     speed_x *= mod
     speed_y *= mod
     
-    blood += 20*dt
+    blood += 30*dt
     if blood >= 255:
       blood = 0
       state += 1
