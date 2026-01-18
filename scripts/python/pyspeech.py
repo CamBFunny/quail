@@ -8,20 +8,20 @@ from quote import quote
 import random
 
 def say(text):
+    # RATE
+    rate = 170
+    engine.setProperty('rate', rate)
+    # VOLUME
+    engine.setProperty('volume', 0.8)
     print(text)
     engine.say(text)
     engine.runAndWait()
     engine.stop()
 
-# RATE
-rate = 160
-engine.setProperty('rate', rate)
-# VOLUME
-engine.setProperty('volume', 0.8)
-
 say(f"Hello, world! I am Python {version[:6]}.")
 
-key_terms = ['life', 'death', 'humanity', 'age', 'wisdom', 'family', 'technology', 'love', 'time']
+key_terms = ['life', 'death', 'humanity', 'age', 'wisdom', 'family', 'technology', 'love', 'time',
+             'music', 'patience', 'purpose', 'meaning', 'art']
 term = random.choice(key_terms)
 saying = quote(term)
 selection = saying[random.choice(range(len(saying)))]

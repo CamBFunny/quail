@@ -2,20 +2,25 @@ import subprocess
 import time
 
 # Create and start the processes
-proc1 = subprocess.Popen(['python3', "animations/bloody yin yang.py"])
-proc2 = subprocess.Popen(['python3', "animations/solar system.py"])
-proc3 = subprocess.Popen(['python3', "animations/dvd.py"])
+programs = ["animations/bloody yin yang.py", "animations/solar system.py", "animations/dvd.py"]
+
+process = [0,] * len(programs)
+for n in range(len(programs)):
+    process[n] = subprocess.Popen(['python3', programs[n]])
 
 time.sleep(1)
+spacer = f"~~~~~"
+for k in range(7):
+    print(spacer)
+
 from scripts.python.pyspeech import *
 
 say(f"Thank you for visiting Cameron's quail repository.")
 say(f"I hope you enjoy my somewhat useless programs.")
 
 # Wait for the processes to finish
-proc1.wait()
-proc2.wait()
-proc3.wait()
+for m in range(len(programs)):
+    process[m].wait()
 
 # opening file_1.py and reading it with read() and executing if with exec()
 # path =

@@ -101,7 +101,7 @@ AC_btn = Button(root, height=2, width=5, text='AC', font=9, bg='Red', command=la
 AC_btn.place(x=5, y=110)
 
 # Ok Button
-ok_btn = Button(root, height=2, width=22, text='Ok', font=9, bg='CadetBlue', command=lambda: root.destroy())
+ok_btn = Button(root, height=2, width=22, text='Close', font=9, bg='CadetBlue', command=lambda: root.destroy())
 ok_btn.place(x=20, y=420)
 
 # Updating root

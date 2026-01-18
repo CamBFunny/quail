@@ -4,6 +4,6 @@ A simple and smart command-line dictionary that displays the definition of the w
 ## Usage
 To start the dictionary type:
 ```bash
-$ python app.py
+$ python thesauras.py
 ```
 ENJOY 🤩
