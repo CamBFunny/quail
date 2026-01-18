@@ -36,6 +36,8 @@ while running:  # Game Loop
     for event in pygame.event.get():
         if pygame.mouse.get_pressed()[0] and not button_check:
             LeftClick = True
+        if event.type == pygame.QUIT:
+            running = False
 
     if LeftClick:
         LeftClick = False

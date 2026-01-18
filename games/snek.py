@@ -140,7 +140,7 @@ while True:
     snake_body.insert(0, list(snake_position))
     if snake_position[0] == fruit_position[0] and snake_position[1] == fruit_position[1]:
         score += 1
-        snake_speed = og_speed + score/4
+        snake_speed = og_speed + score/2
         fruit_spawn = False
     else:
         snake_body.pop()
