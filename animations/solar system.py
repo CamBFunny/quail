@@ -1,15 +1,28 @@
 #importing the required modules
 import turtle
-import time
+import random, time
 from math import *
 
 screen = turtle.Screen()#creating the screen
-screen.tracer(50)
+turtle.Screen().bgcolor("black")
+screen.tracer(1000)
+
+for n in range(1000):
+    x = random.choice(range(-500, 500))
+    y = random.choice(range(-500, 500))
+    turtle.forward(x)
+    turtle.left(90)
+    turtle.forward(y)
+    turtle.dot(random.choice(range(10))/3, "white")
+    turtle.backward(y)
+    turtle.right(90)
+    turtle.backward(x)
+
+screen.tracer(10)
 
 sun = turtle.Turtle()#turtle object for sun
 sun.shape('circle')#shape of sun
 sun.color('yellow')#colour of sun
-
 
 class Planet(turtle.Turtle):
     def __init__(self,name,radius, color):#initialize function
@@ -35,10 +48,15 @@ mars = Planet("Mars",150, 'red')
 jupiter=Planet("Jupiter",180, 'brown')
 saturn=Planet("Saturn",230, 'pink')
 uranus=Planet("Uranus",250, 'light blue')
-neptune=Planet("Neptune",280, 'black')
+neptune=Planet("Neptune",280, 'cyan')
+clear = Planet("line clear", 999, 'black')
 
 #adding planets to a list
-myList = [ mercury, venus,earth, mars,jupiter,saturn,uranus,neptune]
+myList = [ mercury, venus,earth, mars,jupiter,saturn,uranus,neptune, clear]
+import turtle
+
+turtle.delay(500)
+turtle.ht()
 
 
 while True:#while statement
@@ -57,5 +75,5 @@ while True:#while statement
     saturn.angle += 0.018
     uranus.angle += 0.016
     neptune.angle += 0.005
-    
+
     

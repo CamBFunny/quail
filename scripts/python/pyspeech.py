@@ -14,17 +14,21 @@ def say(text):
     engine.stop()
 
 # RATE
-rate = 182
+rate = 160
 engine.setProperty('rate', rate)
-
 # VOLUME
-engine.setProperty('volume', 1)
+engine.setProperty('volume', 0.8)
 
 say(f"Hello, world! I am Python {version[:6]}.")
 
 key_terms = ['life', 'death', 'humanity', 'age', 'wisdom', 'family', 'technology', 'love', 'time']
-saying = quote(random.choice(key_terms))
+term = random.choice(key_terms)
+saying = quote(term)
 selection = saying[random.choice(range(len(saying)))]
+while selection['author'] == "J.K. Rowling" or len(selection['quote']) > 200:
+    saying = quote(random.choice(key_terms))
+    selection = saying[random.choice(range(len(saying)))]
+
 say(f"\"{selection['quote']}\" -{selection['author']}")
 
 # # Saving Voice to a file
