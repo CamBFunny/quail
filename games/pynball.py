@@ -39,7 +39,28 @@ class Pinball():
     def fall(self, interval):
         self.speed = self.speed + gravity * interval
         self.pos = [self.pos[0], self.pos[1] + self.speed]
-        
+
+class Flipper():
+    def __init__(self, pos, color, size):
+        self.pos = pos
+        self.color = color
+        self.size = size
+
+class Slingshot():
+    def __init__(self, pos, color, size):
+        self.pos = pos
+        self.color = color
+        self.size = size
+
+class Bumper():
+    def __init__(self, pos, color, size):
+        self.pos = pos
+        self.color = color
+        self.size = size
+
+    def draw(self):
+        pygame.draw.circle(screen, self.color, self.pos, self.size)
+
 launcher = [resolution[0]- 225, resolution[1] - 50]
 ball = Pinball(launcher, (255, 255, 255), 7, -20)
 
