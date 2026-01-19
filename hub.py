@@ -36,7 +36,7 @@ btn.grid(column=2, row=1)
 lbl = Label(root, text = "DVD")
 lbl.grid(column = 0, row = 2)
 btn = Button(root, text = "Start" ,
-             fg = "red", command=click2)
+             fg = "red", command=click3)
 btn.grid(column=2, row=2)
 
 # Execute Tkinter
