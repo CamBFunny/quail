@@ -140,14 +140,15 @@ while running:  # Game Loop
     flipx = flippers.pos[0] + length * math.cos(spin)
     flipy = flippers.pos[1] + length * math.sin(spin)
     
-    pygame.draw.line(screen, flippers.color, flippers.pos, (flipx, flipy), 5)
+    pygame.draw.circle(screen, flippers.color, flippers.pos, 9)
+    pygame.draw.line(screen, flippers.color, flippers.pos, (flipx, flipy), 6)
     angle = spin + 90*360/3.14
-    offset = length/6
+    offset = length/8
     zoid = [flippers.pos[0] + offset * math.cos(angle), flippers.pos[1] + offset * math.sin(angle)]
     angle = spin - 90*360/3.14
     floyd = [flippers.pos[0] + offset * math.cos(angle), flippers.pos[1] + offset * math.sin(angle)]
-    pygame.draw.line(screen, flippers.color, (zoid[0], zoid[1]), (flipx, flipy), 5)
-    pygame.draw.line(screen, flippers.color, (floyd[0], floyd[1]), (flipx, flipy), 5)
+    pygame.draw.line(screen, flippers.color, (zoid[0], zoid[1]), (flipx, flipy), 6)
+    pygame.draw.line(screen, flippers.color, (floyd[0], floyd[1]), (flipx, flipy), 6)
     
     if hitstop > hitstop_limit:
         if abs(ball.speed[1]) >= 2 or ball.pos[1] <= resolution[1] - buff:
