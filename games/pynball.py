@@ -15,25 +15,9 @@ dt_array = np.array([0.04] * sample_size)
 
 # A global dict value that will contain all the Pygame
 # Surface objects returned by pygame.image.load().
-IMAGESDICT = {'uncovered goal': pygame.image.load('RedSelector.png'),
-              'covered goal': pygame.image.load('Selector.png'),
-              'star': pygame.image.load('Star.png'),
-              'corner': pygame.image.load('Wall_Block_Tall.png'),
-              'wall': pygame.image.load('Wood_Block_Tall.png'),
-              'inside floor': pygame.image.load('Plain_Block.png'),
-              'outside floor': pygame.image.load('Grass_Block.png'),
-              'title': pygame.image.load('star_title.png'),
-              'solved': pygame.image.load('star_solved.png'),
-              'princess': pygame.image.load('princess.png'),
-              'boy': pygame.image.load('boy.png'),
-              'catgirl': pygame.image.load('catgirl.png'),
-              'horngirl': pygame.image.load('horngirl.png'),
-              'pinkgirl': pygame.image.load('pinkgirl.png'),
-              'rock': pygame.image.load('Rock.png'),
-              'short tree': pygame.image.load('Tree_Short.png'),
-              'tall tree': pygame.image.load('Tree_Tall.png'),
-              'ugly tree': pygame.image.load('Tree_Ugly.png')}
-cosmic = pygame.image.load('Star.png')
+IMAGESDICT = {'cosmic_p': pygame.image.load('lib/cosmic.jpg'),
+              '{placeholder}': pygame.image.load('lib/cosmic.jpg')}
+cosmic = IMAGESDICT['cosmic_p']
 sz = cosmic.get_size()
 scl = 200/sz[0]
 cosmic = pygame.transform.scale(cosmic, (sz[0] * scl, sz[1] * scl))
