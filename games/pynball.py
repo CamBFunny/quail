@@ -93,10 +93,11 @@ for p in range(random.choice(range(3, 5))):
     y = random.choice(range(150, 400))
     bumpers.append(Bumper([x, y],(150, 150, 150), 12))
 
-# debug
-# ball.speed[1] = -5
-# gravity = 0
-# elasticity = 1
+debug = False
+if debug:
+    ball.speed[1] = -5
+    gravity = 5
+    elasticity = 0.8
 
 hitstop = 1
 hitstop_limit = 0.03
@@ -114,6 +115,8 @@ while running:  # Game Loop
     if LeftClick and not button_check:
         LeftClick = False
         button_check = True
+        if debug:
+          ball.speed[1] += 10
 
     if RightClick:
         RightClick = False
@@ -183,13 +186,13 @@ while running:  # Game Loop
     draw_text(f"Score: {score}", font_mono20, (220, 230, 230), 20, 400)
 
     # Debug section
-    # Framerate display
-    rolling_frame = frame_counter % sample_size
-    dt_array[rolling_frame] = dt
-    dt_sum = np.sum(dt_array, dtype = np.float32)
-    fps_counter = np.uint8(sample_size / dt_sum)
-    draw_text(f"FPS: {fps_counter}", font_mono20, (200, 200, 200), resolution[0] - 100, resolution[1]-150)
-    draw_text(f"{frame_counter:,}", font_mono20, (0, 0, 0), 850, resolution[1]-125)
+    if debug:
+      # Framerate display
+      rolling_frame = frame_counter % sample_size
+      dt_array[rolling_frame] = dt
+      dt_sum = np.sum(dt_array, dtype = np.float32)
+      fps_counter = np.uint8(sample_size / dt_sum)
+      draw_text(f"FPS: {fps_counter}", font_mono20, (200, 200, 200), resolution[0] - 100, resolution[1]-150)
         
     if event.type == pygame.KEYUP:
         button_check = False
