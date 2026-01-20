@@ -9,8 +9,11 @@ running = True
 clock = pygame.time.Clock()
 framerate = 60
 dt = 0
-
-cosmic = pygame.image.load('lib/cosmic.jpg')
+# A global dict value that will contain all the Pygame
+# Surface objects returned by pygame.image.load().
+IMAGESDICT = {'cosmic_p': pygame.image.load('lib/cosmic.png'),
+              '{placeholder}': pygame.image.load('lib/cosmic.png')}
+cosmic = IMAGESDICT['cosmic_p']
 sz = cosmic.get_size()
 scl = 200/sz[0]
 cosmic = pygame.transform.scale(cosmic, (sz[0] * scl, sz[1] * scl))
@@ -73,9 +76,10 @@ ball = Pinball(launcher, (255, 255, 255), 7, [0, -40])
 score = 0
 
 gravity = 30
+elasticity = 0.8
 bumpers = [Bumper([575, 25], (150, 150, 150), 13),]
 
-cluster = [420, 240]
+cluster = [480, 200]
 bumpers.append(Bumper([cluster[0] + 40, cluster[1]], (150, 150, 150), 12))
 bumpers.append(Bumper([cluster[0], cluster[1] + 20], (150, 150, 150), 12))
 bumpers.append(Bumper([cluster[0] - 40, cluster[1]], (150, 150, 150), 12))
@@ -86,8 +90,12 @@ for p in range(random.choice(range(3, 5))):
     bumpers.append(Bumper([x, y],(150, 150, 150), 12))
 
 # debug
-# ball.speed[1] = -20
-# gravity = 9
+# ball.speed[1] = -8
+# gravity = 0
+# elasticity = 1
+
+hitstop = 2
+hitstop_limit = 0.03
 
 while running:  # Game Loop
     for event in pygame.event.get():
@@ -99,9 +107,10 @@ while running:  # Game Loop
         elif pygame.mouse.get_pressed()[1] and not button_check:
             RightClick = True
 
-    if LeftClick:
+    if LeftClick and not button_check:
         LeftClick = False
         button_check = True
+        ball.speed[1] *= 2
 
     if RightClick:
         RightClick = False
@@ -113,28 +122,33 @@ while running:  # Game Loop
     pygame.draw.rect(screen, [50, 50, 50], [resolution[0]/2 - size[0]/2, 0, size[0], size[1]], border)
     buff = ball.size + border
 
-    if abs(ball.speed[1]) >= 1.5 or ball.pos[1] <= resolution[1] - buff:
-        ball.fall(dt)
-    else:
-        ball.speed[1] = 0
-        ball.pos[1] = resolution[1] - buff
-        
-    if ball.pos[1] > resolution[1] - buff:
-        ball.pos[1] = resolution[1] - buff
-
-
-    # Walls
-    if ball.pos[1] >= resolution[1] - buff and ball.speed[1] > 0:
-        ball.pos[1] = resolution[1] - buff
-        ball.speed[1] = -0.8 * ball.speed[1]
-    elif ball.pos[1] <= buff and ball.speed[1] < 0:
-        ball.pos[1] = buff
-        ball.speed[1] = -0.8 * ball.speed[1]
-
-    if ball.pos[0] <= edges[0] and ball.speed[0] < 0:
-        ball.speed[0] = -0.8 * ball.speed[0]
-    elif ball.pos[0] >= edges[1] and ball.speed[0] > 0:
-        ball.speed[0] = -0.8 * ball.speed[0]
+    if hitstop > hitstop_limit:
+        if abs(ball.speed[1]) >= 2 or ball.pos[1] <= resolution[1] - buff:
+            ball.fall(dt)
+        else:
+            ball.speed[1] = 0
+            ball.pos[1] = resolution[1] - buff
+            
+        if ball.pos[1] > resolution[1] - buff:
+            ball.pos[1] = resolution[1] - buff
+    
+    
+        # Walls
+        if ball.pos[1] >= resolution[1] - buff and ball.speed[1] > 0:
+            hitstop = 0
+            ball.pos[1] = resolution[1] - buff
+            ball.speed[1] = -elasticity * ball.speed[1]
+        elif ball.pos[1] <= buff and ball.speed[1] < 0:
+            hitstop = 0
+            ball.pos[1] = buff
+            ball.speed[1] = -elasticity * ball.speed[1]
+    
+        if ball.pos[0] <= edges[0] and ball.speed[0] < 0:
+            hitstop = 0
+            ball.speed[0] = -elasticity * ball.speed[0]
+        elif ball.pos[0] >= edges[1] and ball.speed[0] > 0:
+            hitstop = 0
+            ball.speed[0] = -elasticity * ball.speed[0]
 
     magnitude = (ball.speed[0] ** 2 + ball.speed[1] ** 2) ** 0.5
     heading = math.atan(ball.speed[1] / (ball.speed[0] + .001))
@@ -144,23 +158,24 @@ while running:  # Game Loop
         distance = [bumpers[b].pos[0] - ball.pos[0], bumpers[b].pos[1] - ball.pos[1]]
         pythag = (abs(distance[0]) ** 2 + abs(distance[1]) ** 2) ** 0.5
         hitbox = ball.size + bumpers[b].size
-        cushion = hitbox * 1.02
+        cushion = hitbox * 1.005
 
-        if pythag <= hitbox:
+        if pythag <= hitbox and hitstop > hitstop_limit:
+            hitstop = 0
             score += 10
             theta = math.atan(distance[1] / (distance[0]+.001))
             if distance[0] <= 0:
                 ball.pos[0] = bumpers[b].pos[0] + cushion * math.cos(theta)
                 ball.pos[1] = bumpers[b].pos[1] + cushion * math.sin(theta)
-                if ball.speed[0] <= 0:
-                    ball.speed[0] = magnitude * (0.8 * math.cos(theta))
-                ball.speed[1] = magnitude * (0.8 * math.sin(theta))
+                #if ball.speed[0] <= 0:
+                ball.speed[0] = magnitude * (elasticity * math.cos(theta))
+                ball.speed[1] = magnitude * (elasticity * math.sin(theta))
             else:
                 ball.pos[0] = bumpers[b].pos[0] - cushion * math.cos(theta)
                 ball.pos[1] = bumpers[b].pos[1] - cushion * math.sin(theta)
-                if ball.speed[0] >= 0:
-                    ball.speed[0] = -magnitude * (0.8 * math.cos(theta))
-                ball.speed[1] = - magnitude * (0.8 * math.sin(theta))
+                #if ball.speed[0] >= 0:
+                ball.speed[0] = -magnitude * (elasticity * math.cos(theta))
+                ball.speed[1] = - magnitude * (elasticity * math.sin(theta))
 
     ball.draw()
     draw_text(f"Score: {score}", font_mono20, (220, 230, 230), 20, 400)
@@ -175,6 +190,7 @@ while running:  # Game Loop
 
     pygame.display.update()
     dt = clock.tick(framerate) / 1000  # Makes movement or time-related events work independent of framerate
+    hitstop += dt
     clock.tick(framerate)  # Sets frames/sec
 
 pygame.quit()
