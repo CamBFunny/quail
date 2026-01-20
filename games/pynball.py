@@ -54,10 +54,9 @@ class Pinball():
         self.pos = [self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]]
         
 class Flipper():
-    def __init__(self, pos, color, size):
+    def __init__(self, pos, color):
         self.pos = pos
         self.color = color
-        self.size = size
     
 class Slingshot():
     def __init__(self, pos, color, size):
@@ -84,14 +83,14 @@ elasticity = 0.8
 bumpers = [Bumper([575, 25], (150, 150, 150), 13),]
 
 cluster = [480, 200]
-bumpers.append(Bumper([cluster[0] + 40, cluster[1]], (150, 150, 150), 12))
-bumpers.append(Bumper([cluster[0], cluster[1] + 20], (150, 150, 150), 12))
-bumpers.append(Bumper([cluster[0] - 40, cluster[1]], (150, 150, 150), 12))
+#bumpers.append(Bumper([cluster[0] + 40, cluster[1]], (150, 150, 150), 12))
+#bumpers.append(Bumper([cluster[0], cluster[1] + 20], (150, 150, 150), 12))
+#bumpers.append(Bumper([cluster[0] - 40, cluster[1]], (150, 150, 150), 12))
 
 for p in range(random.choice(range(3, 5))):
     x = random.choice(range(edges[0]+20, edges[1]-40))
     y = random.choice(range(150, 400))
-    bumpers.append(Bumper([x, y],(150, 150, 150), 12))
+    # bumpers.append(Bumper([x, y],(150, 150, 150), 12))
 
 debug = False
 if debug:
@@ -102,6 +101,9 @@ if debug:
 hitstop = 1
 hitstop_limit = 0.03
 
+flippers = Flipper((resolution[0]/2 - 50, resolution[1] - 50), (230, 230, 30))
+spin = 0
+spin_sign = 1
 while running:  # Game Loop
     for event in pygame.event.get():
         if pygame.key.get_pressed()[K_ESCAPE]:
@@ -127,7 +129,26 @@ while running:  # Game Loop
     
     pygame.draw.rect(screen, [50, 50, 50], [resolution[0]/2 - size[0]/2, 0, size[0], size[1]], border)
     buff = ball.size + border
-
+    
+    limit = 25 * 3.14/180
+    if spin > limit:
+        spin_sign = -1
+    elif spin < -limit:
+        spin_sign = 1
+    spin += spin_sign * 2*dt
+    length = ball.size * 7
+    flipx = flippers.pos[0] + length * math.cos(spin)
+    flipy = flippers.pos[1] + length * math.sin(spin)
+    
+    pygame.draw.line(screen, flippers.color, flippers.pos, (flipx, flipy), 5)
+    angle = spin + 90*360/3.14
+    offset = length/6
+    zoid = [flippers.pos[0] + offset * math.cos(angle), flippers.pos[1] + offset * math.sin(angle)]
+    angle = spin - 90*360/3.14
+    floyd = [flippers.pos[0] + offset * math.cos(angle), flippers.pos[1] + offset * math.sin(angle)]
+    pygame.draw.line(screen, flippers.color, (zoid[0], zoid[1]), (flipx, flipy), 5)
+    pygame.draw.line(screen, flippers.color, (floyd[0], floyd[1]), (flipx, flipy), 5)
+    
     if hitstop > hitstop_limit:
         if abs(ball.speed[1]) >= 2 or ball.pos[1] <= resolution[1] - buff:
             ball.fall(dt)
@@ -137,7 +158,6 @@ while running:  # Game Loop
             
         if ball.pos[1] > resolution[1] - buff:
             ball.pos[1] = resolution[1] - buff
-    
     
         # Walls
         if ball.pos[1] >= resolution[1] - buff and ball.speed[1] > 0:
