@@ -15,12 +15,12 @@ dt_array = np.array([0.04] * sample_size)
 
 # A global dict value that will contain all the Pygame
 # Surface objects returned by pygame.image.load().
-IMAGESDICT = {'cosmic_p': pygame.image.load('lib/cosmic.jpg'),
-              '{placeholder}': pygame.image.load('lib/cosmic.jpg')}
-cosmic = IMAGESDICT['cosmic_p']
-sz = cosmic.get_size()
-scl = 200/sz[0]
-cosmic = pygame.transform.scale(cosmic, (sz[0] * scl, sz[1] * scl))
+# IMAGESDICT = {'cosmic_p': pygame.image.load('lib/cosmic.jpg'),
+              # '{placeholder}': pygame.image.load('lib/cosmic.jpg')}
+# cosmic = IMAGESDICT['cosmic_p']
+# sz = cosmic.get_size()
+# scl = 200/sz[0]
+# cosmic = pygame.transform.scale(cosmic, (sz[0] * scl, sz[1] * scl))
 
 dimensions = [80, 120]
 scale = resolution[1] / dimensions[1]
@@ -76,7 +76,7 @@ class Bumper():
         
 launcher = [resolution[0]- 230, resolution[1] - 50]
 
-ball = Pinball(launcher, (255, 255, 255), 7, [0, -40])
+ball = Pinball(launcher, (255, 255, 255), 7, [0, -30])
 score = 0
 
 gravity = 30
@@ -114,14 +114,13 @@ while running:  # Game Loop
     if LeftClick and not button_check:
         LeftClick = False
         button_check = True
-        ball.speed[1] *= 2
 
     if RightClick:
         RightClick = False
         button_check = True
 
     screen.fill([0, 0, 0])
-    screen.blit(cosmic, [0, 0])
+    # screen.blit(cosmic, [0, 0])
     
     pygame.draw.rect(screen, [50, 50, 50], [resolution[0]/2 - size[0]/2, 0, size[0], size[1]], border)
     buff = ball.size + border
