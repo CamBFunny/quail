@@ -1,5 +1,5 @@
 # Pynball
-import pygame, random, math
+import pygame, random, math, numpy as np
 from pygame import K_ESCAPE
 
 pygame.init()
@@ -7,13 +7,33 @@ resolution = [800, 600]
 screen = pygame.display.set_mode(resolution)
 running = True
 clock = pygame.time.Clock()
-framerate = 60
+framerate = 120
+frame_counter = 0
 dt = 0
+sample_size = 240
+dt_array = np.array([0.04] * sample_size)
+
 # A global dict value that will contain all the Pygame
 # Surface objects returned by pygame.image.load().
-IMAGESDICT = {'cosmic_p': pygame.image.load('lib/cosmic.png'),
-              '{placeholder}': pygame.image.load('lib/cosmic.png')}
-cosmic = IMAGESDICT['cosmic_p']
+IMAGESDICT = {'uncovered goal': pygame.image.load('RedSelector.png'),
+              'covered goal': pygame.image.load('Selector.png'),
+              'star': pygame.image.load('Star.png'),
+              'corner': pygame.image.load('Wall_Block_Tall.png'),
+              'wall': pygame.image.load('Wood_Block_Tall.png'),
+              'inside floor': pygame.image.load('Plain_Block.png'),
+              'outside floor': pygame.image.load('Grass_Block.png'),
+              'title': pygame.image.load('star_title.png'),
+              'solved': pygame.image.load('star_solved.png'),
+              'princess': pygame.image.load('princess.png'),
+              'boy': pygame.image.load('boy.png'),
+              'catgirl': pygame.image.load('catgirl.png'),
+              'horngirl': pygame.image.load('horngirl.png'),
+              'pinkgirl': pygame.image.load('pinkgirl.png'),
+              'rock': pygame.image.load('Rock.png'),
+              'short tree': pygame.image.load('Tree_Short.png'),
+              'tall tree': pygame.image.load('Tree_Tall.png'),
+              'ugly tree': pygame.image.load('Tree_Ugly.png')}
+cosmic = pygame.image.load('Star.png')
 sz = cosmic.get_size()
 scl = 200/sz[0]
 cosmic = pygame.transform.scale(cosmic, (sz[0] * scl, sz[1] * scl))
@@ -90,11 +110,11 @@ for p in range(random.choice(range(3, 5))):
     bumpers.append(Bumper([x, y],(150, 150, 150), 12))
 
 # debug
-# ball.speed[1] = -8
+# ball.speed[1] = -5
 # gravity = 0
 # elasticity = 1
 
-hitstop = 2
+hitstop = 1
 hitstop_limit = 0.03
 
 while running:  # Game Loop
@@ -158,28 +178,36 @@ while running:  # Game Loop
         distance = [bumpers[b].pos[0] - ball.pos[0], bumpers[b].pos[1] - ball.pos[1]]
         pythag = (abs(distance[0]) ** 2 + abs(distance[1]) ** 2) ** 0.5
         hitbox = ball.size + bumpers[b].size
-        cushion = hitbox * 1.005
+        cushion = hitbox * 1.002
 
         if pythag <= hitbox and hitstop > hitstop_limit:
+            while pythag < cushion:
+                ball.pos[0] -= ball.speed[0]/100
+                ball.pos[1] -= ball.speed[1]/100 
+                distance = [bumpers[b].pos[0] - ball.pos[0], bumpers[b].pos[1] - ball.pos[1]]
+                pythag = (abs(distance[0]) ** 2 + abs(distance[1]) ** 2) ** 0.5
             hitstop = 0
             score += 10
             theta = math.atan(distance[1] / (distance[0]+.001))
             if distance[0] <= 0:
-                ball.pos[0] = bumpers[b].pos[0] + cushion * math.cos(theta)
-                ball.pos[1] = bumpers[b].pos[1] + cushion * math.sin(theta)
-                #if ball.speed[0] <= 0:
                 ball.speed[0] = magnitude * (elasticity * math.cos(theta))
                 ball.speed[1] = magnitude * (elasticity * math.sin(theta))
-            else:
-                ball.pos[0] = bumpers[b].pos[0] - cushion * math.cos(theta)
-                ball.pos[1] = bumpers[b].pos[1] - cushion * math.sin(theta)
-                #if ball.speed[0] >= 0:
+            else: 
                 ball.speed[0] = -magnitude * (elasticity * math.cos(theta))
                 ball.speed[1] = - magnitude * (elasticity * math.sin(theta))
 
     ball.draw()
     draw_text(f"Score: {score}", font_mono20, (220, 230, 230), 20, 400)
 
+    # Debug section
+    # Framerate display
+    rolling_frame = frame_counter % sample_size
+    dt_array[rolling_frame] = dt
+    dt_sum = np.sum(dt_array, dtype = np.float32)
+    fps_counter = np.uint8(sample_size / dt_sum)
+    draw_text(f"FPS: {fps_counter}", font_mono20, (200, 200, 200), resolution[0] - 100, resolution[1]-150)
+    draw_text(f"{frame_counter:,}", font_mono20, (0, 0, 0), 850, resolution[1]-125)
+        
     if event.type == pygame.KEYUP:
         button_check = False
         escape = False
@@ -191,6 +219,7 @@ while running:  # Game Loop
     pygame.display.update()
     dt = clock.tick(framerate) / 1000  # Makes movement or time-related events work independent of framerate
     hitstop += dt
+    frame_counter += 1
     clock.tick(framerate)  # Sets frames/sec
 
 pygame.quit()
