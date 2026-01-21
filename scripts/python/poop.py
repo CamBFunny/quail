@@ -27,7 +27,6 @@ while running:
     dt = timer - t_prime
     t_prime = timer
     string = str(timer) + '00'
-    print(string)
     thousandths = int(''.join(string[5:7]))
     if 0 <= thousandths < 24 and one:
         clear()
