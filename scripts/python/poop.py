@@ -15,6 +15,7 @@ wait = False
 dt = 0
 t_prime = 0
 accumulator = 0
+poop_count = 0
 
 while running:
     t = time.localtime(time.time())
@@ -26,7 +27,10 @@ while running:
     dt = timer - t_prime
     t_prime = timer
     string = str(timer) + '00'
-    thousandths = int(''.join(string[5:7]))
+    for p in range(len(string)):
+        if string[p] == '.':
+            deci = p + 1
+    thousandths = int(''.join(string[deci:deci + 2]))
     if 0 <= thousandths < 24 and one:
         clear()
         print(f"{a} {b}")
@@ -61,6 +65,7 @@ while running:
         four = False
         clear()
         message += 'poop '
+        poop_count += 1
         print(message)
         holder = thousandths
         m = 0
