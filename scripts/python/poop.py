@@ -1,8 +1,7 @@
 import time, os
-
 line = ['|', '\\', '-', '/']
 m = 0
-clear = lambda: os.system('cls')
+clear = lambda: os.system('clear')
 running = 1
 load = ' loading...'
 length = len(load)
@@ -52,6 +51,8 @@ while running:
         four = False
         one = True
         m += 1
+    else:
+        time.sleep(0.05)
     if m%20 == 3 and m>4:
         wait = True
         one = False
@@ -69,3 +70,4 @@ while running:
             one = True
             wait = False
             accumulator = 0
+        time.sleep(0.2)
