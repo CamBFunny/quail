@@ -27,10 +27,7 @@ while running:
     dt = timer - t_prime
     t_prime = timer
     string = str(timer) + '00'
-    for p in range(len(string)):
-        if string[p] == '.':
-            deci = p + 1
-    thousandths = int(''.join(string[deci:deci + 2]))    load_bar = f"{a}{b}"
+    load_bar = f"{a}{b}"
     for p in range(len(string)):
         if string[p] == '.':
             deci = p + 1
@@ -61,15 +58,16 @@ while running:
         m += 1
     else:
         time.sleep(0.05)
-    if m%20 == 3 and m>4:
+    if m%28 == 3 and m>4:
         wait = True
         one = False
         two = False
         three = False
         four = False
-        clear()
-        message += 'poop '
         poop_count += 1
+        message = ''
+        message += 'dookie ' * (poop_count // 60 ) + 'crap ' * (poop_count % 60 // 10) + 'poop ' * (poop_count % 10)
+        clear()
         print(message)
         holder = thousandths
         m = 0
