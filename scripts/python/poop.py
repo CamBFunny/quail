@@ -30,28 +30,32 @@ while running:
     for p in range(len(string)):
         if string[p] == '.':
             deci = p + 1
+    thousandths = int(''.join(string[deci:deci + 2]))    load_bar = f"{a}{b}"
+    for p in range(len(string)):
+        if string[p] == '.':
+            deci = p + 1
     thousandths = int(''.join(string[deci:deci + 2]))
     if 0 <= thousandths < 24 and one:
         clear()
-        print(f"{a} {b}")
+        print(load_bar)
         one = False
         two = True
         m += 1
     elif 24 <= thousandths < 48 and two:
         clear()
-        print(f"{a} {b}")
+        print(load_bar)
         two = False
         three = True
         m += 1
     elif 48 <= thousandths < 76 and three:
         clear()
-        print(f"{a} {b}")
+        print(load_bar)
         three = False
         four = True
         m += 1
     elif 76 <= thousandths < 100 and four:
         clear()
-        print(f"{a} {b}")
+        print(load_bar)
         four = False
         one = True
         m += 1
