@@ -27,7 +27,7 @@ while running:
     dt = timer - t_prime
     t_prime = timer
     string = str(timer) + '00'
-    load_bar = f"{a}{b}"
+    load_bar = f"{a}{b}\n\n"
     for p in range(len(string)):
         if string[p] == '.':
             deci = p + 1
@@ -68,7 +68,7 @@ while running:
         message = ''
         message += 'dookie ' * (poop_count // 60 ) + 'crap ' * (poop_count % 60 // 10) + 'poop ' * (poop_count % 10)
         clear()
-        print(message)
+        print(f"{message}\n\n")
         holder = thousandths
         m = 0
     elif wait:

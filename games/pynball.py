@@ -98,32 +98,32 @@ bumpers.append(Bumper([cluster[0] - 40, cluster[1]], (150, 150, 150), 12))
 for p in range(random.choice(range(3, 5))):
     x = random.choice(range(edges[0]+20, edges[1]-40))
     y = random.choice(range(150, 400))
-    bumpers.append(Bumper([x, y],(150, 150, 150), 12))
+    # bumpers.append(Bumper([x, y],(150, 150, 150), 12))
 
-debug = False
-if debug:
-    ball.speed[1] = -5
-    gravity = 5
-    elasticity = 0.8
+flipper_left = Flipper((resolution[0] / 2 - 50, resolution[1] - 50), (230, 230, 30))
+flipper_right = Flipper((resolution[0]/2 + 50, resolution[1] - 50), (230, 230, 30))
+left_spin = 0
+right_spin = 0
 
 hitstop = 1
 hitstop_limit = 0.017
 
-flippers = Flipper((resolution[0]/2 - 50, resolution[1] - 50), (230, 230, 30))
-flipper_right = Flipper((resolution[0]/2 + 50, resolution[1] - 50), (230, 230, 30))
-spin = 0
-right_spin = 0
+debug = False
+if debug:
+    ball.speed[1] = -1
+    ball.pos[0] = 380
+    ball.pos[1] = 480
+    hitstop_limit = 0.25
+
 
 while running:  # Game Loop
     for event in pygame.event.get():
         if pygame.key.get_pressed()[K_ESCAPE]:
             escape = True
             running = False
-        if pygame.key.get_pressed()[K_SPACE]:
-            space_button = True
-        if pygame.mouse.get_pressed()[0] and not button_check:
+        if pygame.mouse.get_pressed()[0]:
             LeftClick = True
-        elif pygame.mouse.get_pressed()[1] and not button_check:
+        elif pygame.mouse.get_pressed()[1]:
             RightClick = True
 
     if LeftClick and not button_check:
@@ -142,36 +142,39 @@ while running:  # Game Loop
     pygame.draw.rect(screen, [50, 50, 50], [resolution[0]/2 - size[0]/2, 0, size[0], size[1]], border)
     buff = ball.size + border
 
-    if space_button:
+    if pygame.key.get_pressed()[K_SPACE]:
         flip_left = True
         flip_right = True
+
+    if pygame.key.get_pressed()[K_LEFT]:
+        flip_left = True
 
     flip_speed = 40
     limit = 25 * 3.14/180
     if flip_left:
-        if spin > -limit:
-            spin -= flip_speed * dt
-        elif spin < -limit:
-            spin = -limit
+        if left_spin > -limit:
+            left_spin -= flip_speed * dt
+        elif left_spin < -limit:
+            left_spin = -limit
     else:
-        if spin < limit:
-            spin += flip_speed * dt
-        elif spin > limit:
-            spin = limit
+        if left_spin < limit:
+            left_spin += flip_speed * dt
+        elif left_spin > limit:
+            left_spin = limit
 
     length = ball.size * 7
-    flipx = flippers.pos[0] + length * math.cos(spin)
-    flipy = flippers.pos[1] + length * math.sin(spin)
+    flipx = flipper_left.pos[0] + length * math.cos(left_spin)
+    flipy = flipper_left.pos[1] + length * math.sin(left_spin)
 
-    pygame.draw.circle(screen, flippers.color, flippers.pos, 9)
-    pygame.draw.line(screen, flippers.color, flippers.pos, (flipx, flipy), 6)
-    angle = spin + 90 * 360 / 3.14
+    pygame.draw.circle(screen, flipper_left.color, flipper_left.pos, 9)
+    pygame.draw.line(screen, flipper_left.color, flipper_left.pos, (flipx, flipy), 6)
+    top_angle = left_spin + 90 * 360 / 3.14
     offset = length / 8
-    zoid = [flippers.pos[0] + offset * math.cos(angle), flippers.pos[1] + offset * math.sin(angle)]
-    angle = spin - 90 * 360 / 3.14
-    floyd = [flippers.pos[0] + offset * math.cos(angle), flippers.pos[1] + offset * math.sin(angle)]
-    pygame.draw.line(screen, flippers.color, (zoid[0], zoid[1]), (flipx, flipy), 6)
-    pygame.draw.line(screen, flippers.color, (floyd[0], floyd[1]), (flipx, flipy), 6)
+    hit_left= [flipper_left.pos[0] + offset * math.cos(top_angle), flipper_left.pos[1] + offset * math.sin(top_angle)]
+    bot_angle = left_spin - 90 * 360 / 3.14
+    bot_left = [flipper_left.pos[0] + offset * math.cos(bot_angle), flipper_left.pos[1] + offset * math.sin(bot_angle)]
+    pygame.draw.line(screen, flipper_left.color, (hit_left[0], hit_left[1]), (flipx, flipy), 6)
+    pygame.draw.line(screen, flipper_left.color, (bot_left[0], bot_left[1]), (flipx, flipy), 6)
 
     # Right flipper
     if flip_right:
@@ -226,9 +229,11 @@ while running:  # Game Loop
             hitstop = 0
             ball.speed[0] = -elasticity * ball.speed[0]
 
+    # Ball magnitude and direction
     magnitude = (ball.speed[0] ** 2 + ball.speed[1] ** 2) ** 0.5
     heading = math.atan(ball.speed[1] / (ball.speed[0] + .001))
-    
+
+    # Bumpers
     for b in range(len(bumpers)):
         bumpers[b].draw()
         distance = [bumpers[b].pos[0] - ball.pos[0], bumpers[b].pos[1] - ball.pos[1]]
@@ -252,6 +257,27 @@ while running:  # Game Loop
                 ball.speed[0] = -magnitude * (elasticity * math.cos(theta))
                 ball.speed[1] = - magnitude * (elasticity * math.sin(theta))
 
+    # Flippers
+    # if ball.pos[1] > resolution[1]*0.7:
+    #     for i in range(100):
+    #         stretch = length * (i+1)/100
+    #         point = [hit_left[0] + stretch * math.cos(left_spin), hit_left[1] + stretch * math.sin(left_spin)-5]
+    #         distance = [point[0] - ball.pos[0], point[1] - ball.pos[1]]
+    #         pythag = (abs(distance[0]) ** 2 + abs(distance[1]) ** 2) ** 0.5
+    #         hitbox = ball.size + 8
+    #         cushion = hitbox * 1.002
+    #         if pythag <= hitbox and hitstop > hitstop_limit:
+    #             hitstop = 0
+    #             while pythag < cushion:
+    #                 ball.pos[0] -= ball.speed[0] / 100
+    #                 ball.pos[1] -= ball.speed[1] / 100
+    #                 distance = [point[0] - ball.pos[0], point[1] - ball.pos[1]]
+    #                 pythag = (abs(distance[0]) ** 2 + abs(distance[1]) ** 2) ** 0.5
+    #             if flip_left and left_spin < limit:
+    #                 ball.speed[1] = magnitude * stretch / 5 * math.sin(theta - left_spin) * elasticity
+    #                 ball.speed[1] -= 20
+    #             break
+
     ball.draw()
     draw_text(f"Score: {score}", font_mono20, (220, 230, 230), 20, 400)
 
@@ -266,9 +292,10 @@ while running:  # Game Loop
         
     if event.type == pygame.KEYUP:
         if event.key == K_SPACE:
-            space_button = False
             flip_left = False
             flip_right = False
+        if event.key == K_LEFT:
+            flip_left = False
         button_check = False
         escape = False
     if event.type == pygame.MOUSEBUTTONUP:
