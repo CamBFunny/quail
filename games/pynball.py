@@ -47,6 +47,10 @@ def draw_text(text, font, text_col, x, y):  # function for outputting text onto 
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
+def dprint(text):
+    if debug:
+        print(text)
+
 class Pinball():
     def __init__(self, pos, color, size, speed):
         self.pos = pos
