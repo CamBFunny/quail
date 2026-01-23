@@ -16,7 +16,7 @@ framerate = 120
 frame_counter = 0
 dt = 0
 sample_size = 240
-dt_array = np.array([0.04] * sample_size)
+dt_array = np.array([1/framerate] * sample_size)
 
 # A global dict value that will contain all the Pygame
 # Surface objects returned by pygame.image.load().
@@ -50,6 +50,11 @@ def draw_text(text, font, text_col, x, y):  # function for outputting text onto 
 def dprint(text):
     if debug:
         print(text)
+        
+def dtext(text, font, text_col, x, y):  # function for outputting text onto the screen
+    if debug:
+        img = font.render(text, True, text_col)
+        screen.blit(img, (x, y))
 
 class Pinball():
     def __init__(self, pos, color, size, speed):
@@ -87,7 +92,7 @@ class Bumper():
         
 launcher = [resolution[0]- 230, resolution[1] - 50]
 
-ball = Pinball(launcher, (255, 255, 255), 7, [0, -30])
+ball = Pinball(launcher, (255, 255, 255), 7, [0, -25])
 score = 0
 
 gravity = 30
@@ -263,8 +268,9 @@ while running:  # Game Loop
 
     # Flippers
     # if ball.pos[1] > resolution[1]*0.7:
-    #     for i in range(100):
-    #         stretch = length * (i+1)/100
+    #     steps = 20
+    #     for i in range(steps):
+    #         stretch = length * (i+1)/steps
     #         point = [hit_left[0] + stretch * math.cos(left_spin), hit_left[1] + stretch * math.sin(left_spin)-5]
     #         distance = [point[0] - ball.pos[0], point[1] - ball.pos[1]]
     #         pythag = (abs(distance[0]) ** 2 + abs(distance[1]) ** 2) ** 0.5
@@ -292,7 +298,7 @@ while running:  # Game Loop
       dt_array[rolling_frame] = dt
       dt_sum = np.sum(dt_array, dtype = np.float32)
       fps_counter = np.uint8(sample_size / dt_sum)
-      draw_text(f"FPS: {fps_counter}", font_mono20, (200, 200, 200), resolution[0] - 100, resolution[1]-150)
+      dtext(f"FPS: {fps_counter}", font_mono20, (200, 200, 200), resolution[0] - 100, resolution[1]-150)
         
     if event.type == pygame.KEYUP:
         if event.key == K_SPACE:
