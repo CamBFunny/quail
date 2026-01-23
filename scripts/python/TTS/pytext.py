@@ -18,6 +18,6 @@ def say(text):
 say(input('Say something: '))
 
 # # Saving Voice to a file
-# engine.save_to_file('', 'test.mp3')
+# engine.save_to_file('', 'tmp/test.mp3')
 # engine.runAndWait()
-# playsound.playsound('test.mp3')
+# playsound.playsound('tmp/test.mp3')

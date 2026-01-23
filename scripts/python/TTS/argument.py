@@ -7,8 +7,8 @@ version = f"{sys.version}"
 def main(blurb):
   print(blurb)
   tts = gTTS(blurb)
-  tts.save('Gtext.mp3')
-  playsound.playsound('Gtext.mp3')
+  tts.save('tmp/Gtext.mp3')
+  playsound.playsound('tmp/Gtext.mp3')
 
 main(f"Your motherboard was a thermal paste guzzling microprocessor that couldn't calculate simple addition")
 
@@ -17,9 +17,6 @@ import pyttsx3
 engine = pyttsx3.init()
 import sys
 version = f"{sys.version}"
-
-from quote import quote
-import random
 
 def say(text):
     # RATE
@@ -33,8 +30,3 @@ def say(text):
     engine.stop()
 
 say(f"No u.")
-
-# # Saving Voice to a file
-# engine.save_to_file('', 'test.mp3')
-# engine.runAndWait()
-# playsound.playsound('test.mp3')
