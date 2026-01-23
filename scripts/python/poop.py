@@ -66,7 +66,8 @@ while running:
         four = False
         poop_count += 1
         message = ''
-        message += 'dookie ' * (poop_count // 60 ) + 'crap ' * (poop_count % 60 // 10) + 'poop ' * (poop_count % 10)
+        message += 'shit ' * (poop_count // 360) + 'dookie ' * (poop_count % 360 // 60 )
+        message += 'crap ' * (poop_count % 60 // 10) + 'poop ' * (poop_count % 10)
         clear()
         print(f"{message}\n\n")
         holder = thousandths
