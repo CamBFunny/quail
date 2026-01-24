@@ -1,5 +1,4 @@
-import subprocess
-import time
+import subprocess, time, random, os
 
 # Create and start the processes
 programs = ["animations/bloody yin yang.py", "animations/solar system.py", "animations/dvd.py"]
@@ -9,11 +8,15 @@ for n in range(len(programs)):
     process[n] = subprocess.Popen(['python3', programs[n]])
 
 time.sleep(1)
-spacer = f"~~~~~"
-for k in range(7):
-    print(spacer)
 
-from scripts.python.pyspeech import *
+path = '/home/cameron/PycharmProjects/quail/ascii_art'
+files = os.listdir(path)
+choice = random.choice(range(len(files)))
+with open(f"{path}/{files[choice]}", 'r') as f:
+    content = f.read()
+    print(content)
+
+from scripts.python.TTS.pyspeech import *
 
 say(f"Thank you for visiting Cameron's quail repository.")
 say(f"I hope you enjoy my somewhat useless programs.")
