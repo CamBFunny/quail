@@ -1,6 +1,6 @@
 import os
 
-path = '/home/cameron/PycharmProjects/quail/ascii_art'
+path = '/ascii_art'
 files = os.listdir(path)
 counter = 0
 for l in range(len(files)):

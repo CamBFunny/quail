@@ -3,7 +3,7 @@ import difflib
 
 from difflib import get_close_matches
 
-data = json.load(open("data.json"))     # Importing data from data.json
+data = json.load(open("English_Theasauras/data.json"))     # Importing data from data.json
 
 def show_def(word):
     word = word.lower()
