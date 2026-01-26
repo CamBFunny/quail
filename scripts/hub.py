@@ -9,7 +9,7 @@ programs = ["animations/bloody yin yang.py", "animations/solar system.py", "anim
 
 # root window title and dimension
 root.title("Quail Hub")
-resolution = [600, 450]
+resolution = [800, 600]
 root.geometry(f"{resolution[0]}x{resolution[1]}")
 
 def clicked():
