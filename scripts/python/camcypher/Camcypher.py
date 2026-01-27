@@ -13,7 +13,11 @@ root.withdraw()
 source_file = filedialog.askopenfilename()
 
 # Create backup folder
-directory_name = f'camcypher-content'
+pickle = list(source_file)
+length = len(pickle) - 4
+cheese = ''.join(pickle[:length])
+
+directory_name = f"{cheese}_cypher-content"
 try:
     os.mkdir(directory_name)
     print(f"Directory '{directory_name}' created successfully.")
@@ -64,7 +68,7 @@ for i in range(len(text_content)):
 
 # 2. Save encrypted file and key in the same folder as original file
 no_ext = f"{os.path.splitext(source_file)[0]}"
-file_name = f"{no_ext}_camcypher.txt"
+file_name = f"{no_ext}_cypher.txt"
 file1 = file_name
 
 save = ''.join(encoded_bytes)

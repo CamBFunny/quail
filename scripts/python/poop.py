@@ -67,7 +67,7 @@ while running:
         poop_count += 1
         message = ''
         message += 'shit ' * (poop_count // 360) + 'dookie ' * (poop_count % 360 // 60 )
-        message += 'crap ' * (poop_count % 60 // 10) + 'poop ' * (poop_count % 10)
+        message += 'crap ' * (poop_count % 60 // 6) + 'poop ' * (poop_count % 6)
         clear()
         print(f"{message}\n\n")
         holder = thousandths
