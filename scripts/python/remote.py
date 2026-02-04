@@ -74,8 +74,6 @@ os.system('clear')
 os.system(' '.join([enter_mainframe, tv_ip]))
 console_feedback.append(f"Connected to television {tv_ip}!")
 
-print(pygame.font.get_fonts())
-
 resolution = [800, 600]
 screen = pygame.display.set_mode(resolution)
 
