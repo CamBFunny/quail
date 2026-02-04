@@ -127,13 +127,14 @@ if debug:
 
 while running:  # Game Loop
     for event in pygame.event.get():
-        if pygame.key.get_pressed()[K_ESCAPE]:
-            escape = True
-            running = False
         if pygame.mouse.get_pressed()[0]:
             LeftClick = True
         elif pygame.mouse.get_pressed()[1]:
             RightClick = True
+
+    if pygame.key.get_pressed()[K_ESCAPE]:
+        escape = True
+        running = False
 
     if LeftClick and not button_check:
         LeftClick = False
@@ -157,6 +158,9 @@ while running:  # Game Loop
 
     if pygame.key.get_pressed()[K_LEFT]:
         flip_left = True
+
+    if pygame.key.get_pressed()[K_RIGHT]:
+        flip_right = True
 
     flip_speed = 40
     limit = 25 * 3.14/180
@@ -306,6 +310,8 @@ while running:  # Game Loop
             flip_right = False
         if event.key == K_LEFT:
             flip_left = False
+        if event.key == K_RIGHT:
+            flip_right = False
         button_check = False
         escape = False
     if event.type == pygame.MOUSEBUTTONUP:
