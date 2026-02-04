@@ -25,6 +25,10 @@ controls = {
         K_DOWN: "adb shell input keyevent 20",
         K_LEFT: "adb shell input keyevent 21",
         K_RIGHT: "adb shell input keyevent 22",
+        K_w: "adb shell input keyevent 19",
+        K_s: "adb shell input keyevent 20",
+        K_a: "adb shell input keyevent 21",
+        K_d: "adb shell input keyevent 22",
         K_e: "adb shell input keyevent 23", # key_dpad_center
         K_r: "adb shell input keyevent 24", # key_volume_up
         K_f: "adb shell input keyevent 25", # key_volume_down
