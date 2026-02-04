@@ -74,7 +74,12 @@ os.system(' '.join([enter_mainframe, tv_ip]))
 os.system('clear')
 console_feedback.append(f"Connected to television {tv_ip}!")
 
-os.system(f"echo {action}")
+length = len(action)
+for n in range(length):
+    try:
+        os.system(f"echo {list(action.values())[n]}-{pygame.key.name(list(action)[n])}")
+    except:
+        os.system(f"echo {list(action.values())[n]}-{list(action)[n]}")
 
 resolution = [800, 600]
 screen = pygame.display.set_mode(resolution)
@@ -103,6 +108,7 @@ while running:  # Game Loop
 
     screen.fill([0, 0, 0])
     # screen.blit(background, [0, 0])
+
     length = len(console_feedback)
     for n in range(length):
         draw_text(f"{console_feedback[n]}", font_mono, (50, 235, 50),
