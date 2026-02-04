@@ -65,7 +65,6 @@ action[K_a] = 'key_media_previous'
 action[K_c] = 'key_captions'
 
 running = True
-trigger = False
 clock = pygame.time.Clock()
 framerate = 20
 console_feedback = ['',]
@@ -98,7 +97,6 @@ while running:  # Game Loop
         if event.type == pygame.KEYDOWN:
             try:
                 remote_control(event.key)
-                trigger = True
             except:
                 console_feedback.append(f"Key not recognized: {pygame.key.name(event.key)}")
 
@@ -117,9 +115,5 @@ while running:  # Game Loop
 
     pygame.display.update()
     clock.tick(framerate)  # Sets frames/sec
-
-    if trigger:
-        time.sleep(0.2)
-        trigger = False
 
 pygame.quit()
