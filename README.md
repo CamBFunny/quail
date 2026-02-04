@@ -4,6 +4,9 @@ Liberty, not cheap.
 Hub for quail programming, helpful files, and fun projects!\
 Welcome to the FOSS future.
 
+## To-Do
+install durfetch
+
 ## Purpose
 Bring man and computer together in harmony.
 
