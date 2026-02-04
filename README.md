@@ -5,8 +5,9 @@ Hub for quail programming, helpful files, and fun projects!\
 Welcome to the FOSS future.
 
 ## To-Do
-install durfetch
-Make keyboard controls map for PyFire
+install durfetch\
+Make keyboard controls map for PyFire\
+Install astroterm\
 
 ## Purpose
 Bring man and computer together in harmony.
