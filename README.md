@@ -6,6 +6,7 @@ Welcome to the FOSS future.
 
 ## To-Do
 install durfetch
+Make keyboard controls map for PyFire
 
 ## Purpose
 Bring man and computer together in harmony.
