@@ -5,8 +5,8 @@ from pygame.locals import (KEYDOWN, QUIT, KEYUP, K_LCTRL, MOUSEWHEEL,
                            K_q, K_w, K_e, K_r, K_t,
                            K_a, K_s, K_d, K_f, K_g, K_h, K_j, K_k,
                            K_z, K_x, K_c, K_v, K_b, K_m)
-
-tv_ip = f"192.168.0.235"
+ip_address = input("Type tv's ip address: ")
+tv_ip = f"{ip_address}"
 enter_mainframe = f"adb connect"
 
 pygame.init()
