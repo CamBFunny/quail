@@ -65,6 +65,7 @@ action[K_a] = 'key_media_previous'
 action[K_c] = 'key_captions'
 
 running = True
+trigger = False
 clock = pygame.time.Clock()
 framerate = 20
 console_feedback = ['',]
@@ -91,13 +92,13 @@ def draw_text(text, font, text_col, x, y):  # function for outputting text onto 
 def remote_control(text): # Control the television
     os.system(controls[text])
     console_feedback.append(f"{action[text]} [{pygame.key.name(text)}]: {controls[text]}")
-    time.sleep(0.5)
 
 while running:  # Game Loop
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             try:
                 remote_control(event.key)
+                trigger = True
             except:
                 console_feedback.append(f"Key not recognized: {pygame.key.name(event.key)}")
 
@@ -116,5 +117,9 @@ while running:  # Game Loop
 
     pygame.display.update()
     clock.tick(framerate)  # Sets frames/sec
+
+    if trigger:
+        time.sleep(0.2)
+        trigger = False
 
 pygame.quit()
