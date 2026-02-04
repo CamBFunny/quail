@@ -70,9 +70,11 @@ framerate = 20
 console_feedback = ['',]
 console_feedback[0] = 'Welcome ~ Linux-TV Remote v0.1'
 
-os.system('clear')
 os.system(' '.join([enter_mainframe, tv_ip]))
+os.system('clear')
 console_feedback.append(f"Connected to television {tv_ip}!")
+
+os.system(f"echo {action}")
 
 resolution = [800, 600]
 screen = pygame.display.set_mode(resolution)
