@@ -6,14 +6,29 @@ from pygame.locals import (KEYDOWN, QUIT, KEYUP, K_LCTRL, MOUSEWHEEL,
                            K_a, K_s, K_d, K_f, K_g, K_h, K_j, K_k,
                            K_z, K_x, K_c, K_v, K_b, K_m)
 
-ip_address = input("Type tv's ip address: ")
+ip_address = f""
 tv_ip = f"{ip_address}"
 enter_mainframe = f"adb connect"
 
 pygame.init()
 
+resolution = [1000, 600]
+screen = pygame.display.set_mode(resolution)
+
+Images = {'remote': pygame.image.load('lib/remote.png'),
+              'lock': pygame.image.load('lib/lock.png')}
+
+def resize(self, height):
+    sz = self.get_size()
+    scl = height/sz[1]
+    return pygame.transform.scale(self, (sz[0] * scl, sz[1] * scl))
+
+img_remote = resize(Images['remote'], resolution[1])
+img_lock = resize(Images['lock'], 100)
+
 font_size = 21
 font_mono = pygame.font.SysFont("ubuntumono", font_size, bold=False, italic=False)
+font_atari = pygame.font.SysFont("atari800", 100, bold=False, italic=False)
 
 controls = {
         "key_unknown": "adb shell input keyevent 0",
@@ -34,12 +49,11 @@ controls = {
         K_f: "adb shell input keyevent 25", # key_volume_down
         "key_menu": "adb shell input keyevent 82",
         K_SPACE: "adb shell input keyevent 85",   # key_media_play_pause
-        K_d: "adb shell input keyevent 87", # key_media_next
-        K_a: "adb shell input keyevent 88", # key_media_previous
+        K_v: "adb shell input keyevent 87", # key_media_next
+        K_c: "adb shell input keyevent 88", # key_media_previous
         "key_media_rewind": "adb shell input keyevent 89",
         "key_media_fast_forward": "adb shell input keyevent 90",
         K_m: "adb shell input keyevent 164", # key_volume_mute
-        K_c: "adb shell input keyevent 175", # key_captions
         "key_settings": "adb shell input keyevent 176",
         "key_tv_input": "adb shell input keyevent 178",
         K_k: "adb shell input keyevent 223", # key_sleep
@@ -65,33 +79,58 @@ action[K_2] = 'key_tv_input_hdmi_2'
 action[K_k] = 'key_sleep'
 action[K_j] = 'key_wakeup'
 action[K_m] = 'key_volume_mute'
-action[K_d] = 'key_media_next'
-action[K_a] = 'key_media_previous'
-action[K_c] = 'key_captions'
+action[K_v] = 'key_media_next'
+action[K_c] = 'key_media_previous'
 
 running = True
 clock = pygame.time.Clock()
 framerate = 20
+lock_controls = False
+buttoncheck = False
+version = 'v0.1'
 console_feedback = ['',]
-console_feedback[0] = 'Welcome ~ Linux-TV Remote v0.1'
+console_feedback[0] = 'Welcome ~ PyFire Linux-TV Remote v0.1'
 
 os.system(' '.join([enter_mainframe, tv_ip]))
-os.system('clear')
+os.system(f"echo Running PyFire {version}")
 console_feedback.append(f"Connected to television {tv_ip}!")
-
-length = len(action)
-for n in range(length):
-    try:
-        os.system(f"echo {list(action.values())[n]}-{pygame.key.name(list(action)[n])}")
-    except:
-        os.system(f"echo {list(action.values())[n]}-{list(action)[n]}")
-
-resolution = [800, 600]
-screen = pygame.display.set_mode(resolution)
 
 def draw_text(text, font, text_col, x, y):  # function for outputting text onto the screen
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
+
+class Button():  # Function for clickable buttons on screen
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+        self.clicked = False  # used for singles button clicks
+
+    def draw(self):
+        action = False
+        # Mouse over event
+        mousepos = pygame.mouse.get_pos()
+
+        if self.rect.collidepoint(mousepos):  # Over button
+            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:  # Left click
+                # self.clicked = True
+                action = True
+
+        # Draw button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        return action
+
+    def hover(self):
+        action = False  # Mouse over event
+        mousepos = pygame.mouse.get_pos()
+
+        if self.rect.collidepoint(mousepos):  # Over button
+            action = True
+
+        return action
 
 def remote_control(text): # Control the television
     os.system(controls[text])
@@ -99,7 +138,7 @@ def remote_control(text): # Control the television
 
 while running:  # Game Loop
     for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and not lock_controls:
             try:
                 remote_control(event.key)
             except:
@@ -111,12 +150,27 @@ while running:  # Game Loop
             RightClick = True
 
     screen.fill([0, 0, 0])
-    # screen.blit(background, [0, 0])
+    screen.blit(img_remote, [resolution[0] - img_remote.get_width(), 0])
+
+    if lock_controls:
+        s = pygame.Surface(resolution)  # the size of your rect
+        s.set_alpha(235)  # alpha level
+        s.fill((0, 0, 0))  # this fills the entire surface
+        screen.blit(s, (0, 0))  # (0,0) are the top-left coordinates
+        draw_text(f"Controls Locked", font_atari, (180, 180, 0), 125, 220)
+
+    if Button(resolution[0]-138, resolution[1]-img_lock.get_height()/2,
+              img_lock, 1).draw() and not buttoncheck:
+        buttoncheck = True
+        lock_controls = not lock_controls
 
     length = len(console_feedback)
     for n in range(length):
         draw_text(f"{console_feedback[n]}", font_mono, (50, 235, 50),
                   10, resolution[1] - font_size *length*1.1 + font_size *n*1.1)
+
+    if event.type == pygame.MOUSEBUTTONUP:
+        buttoncheck = False
 
     pygame.display.update()
     clock.tick(framerate)  # Sets frames/sec
