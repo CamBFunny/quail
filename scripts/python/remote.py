@@ -24,63 +24,42 @@ def resize(self, height):
     return pygame.transform.scale(self, (sz[0] * scl, sz[1] * scl))
 
 img_remote = resize(Images['remote'], resolution[1])
-img_lock = resize(Images['lock'], 100)
+img_lock = resize(Images['lock'], 80)
 
 font_size = 21
 font_mono = pygame.font.SysFont("ubuntumono", font_size, bold=False, italic=False)
 font_atari = pygame.font.SysFont("atari800", 100, bold=False, italic=False)
 
-controls = {
-        "key_unknown": "adb shell input keyevent 0",
-        "key_soft_left": "adb shell input keyevent 1",
-        "key_soft_right": "adb shell input keyevent 2",
-        K_h: "adb shell input keyevent 3", # key_home
-        K_BACKSPACE: "adb shell input keyevent 4", # key_back
-        K_UP: "adb shell input keyevent 19",
-        K_DOWN: "adb shell input keyevent 20",
-        K_LEFT: "adb shell input keyevent 21",
-        K_RIGHT: "adb shell input keyevent 22",
-        K_w: "adb shell input keyevent 19",
-        K_s: "adb shell input keyevent 20",
-        K_a: "adb shell input keyevent 21",
-        K_d: "adb shell input keyevent 22",
-        K_e: "adb shell input keyevent 23", # key_dpad_center
-        K_r: "adb shell input keyevent 24", # key_volume_up
-        K_f: "adb shell input keyevent 25", # key_volume_down
-        "key_menu": "adb shell input keyevent 82",
-        K_SPACE: "adb shell input keyevent 85",   # key_media_play_pause
-        K_v: "adb shell input keyevent 87", # key_media_next
-        K_c: "adb shell input keyevent 88", # key_media_previous
-        "key_media_rewind": "adb shell input keyevent 89",
-        "key_media_fast_forward": "adb shell input keyevent 90",
-        K_m: "adb shell input keyevent 164", # key_volume_mute
-        "key_settings": "adb shell input keyevent 176",
-        "key_tv_input": "adb shell input keyevent 178",
-        K_k: "adb shell input keyevent 223", # key_sleep
-        K_j: "adb shell input keyevent 224", # key_wakeup
-        "key_tv_input_hdmi_1": "adb shell input keyevent 243",
-        K_2: "adb shell input keyevent 244", # key_tv_input_hdmi_2
-        "key_tv_input_hdmi_3": "adb shell input keyevent 245",
-        "key_tv_input_hdmi_4": "adb shell input keyevent 246",
-        "key_media_skip_forward": "adb shell input keyevent 272",
-        "key_media_skip_backward": "adb shell input keyevent 273",
-        "key_media_step_forward": "adb shell input keyevent 274",
-        "key_media_step_backward": "adb shell input keyevent 275",
-    }
+setup_controls = ((K_SPACE, 'key_media_play_pause', "adb shell input keyevent 85"),
+                  (K_BACKSPACE, 'key_back', "adb shell input keyevent 4"),
+                  (K_r, "adb shell input keyevent 24", 'key_volume_up'),
+                  (K_f, "adb shell input keyevent 25", 'key_volume_down'),
+                  (K_h, "adb shell input keyevent 3", 'key_home'),
+                  (K_e, "adb shell input keyevent 23", 'key_dpad_center'),
+                  (K_2, "adb shell input keyevent 244", 'key_tv_input_hdmi_2'),
+                  (K_k, "adb shell input keyevent 223", 'key_sleep'),
+                  (K_j, "adb shell input keyevent 224", 'key_wakeup'),
+                  (K_m, "adb shell input keyevent 164", 'key_volume_mute'),
+                  (K_v, "adb shell input keyevent 87", 'key_media_next'),
+                  (K_c, "adb shell input keyevent 88", 'key_media_previous'),
+                  (K_UP, "adb shell input keyevent 19", 'up'),
+                  (K_DOWN, "adb shell input keyevent 20", 'down'),
+                  (K_LEFT, "adb shell input keyevent 21", 'left'),
+                  (K_RIGHT, "adb shell input keyevent 22", 'right'),
+                  (K_w, "adb shell input keyevent 19", 'up'),
+                  (K_s, "adb shell input keyevent 20", 'down'),
+                  (K_a, "adb shell input keyevent 21", 'left'),
+                  (K_d, "adb shell input keyevent 22", 'right')
+                  )
 
-action = dict(controls)
-action[K_SPACE] = 'key_media_play_pause'
-action[K_BACKSPACE] = 'key_back'
-action[K_r] = 'key_volume_up'
-action[K_f] = 'key_volume_down'
-action[K_h] = 'key_home'
-action[K_e] = 'key_dpad_center'
-action[K_2] = 'key_tv_input_hdmi_2'
-action[K_k] = 'key_sleep'
-action[K_j] = 'key_wakeup'
-action[K_m] = 'key_volume_mute'
-action[K_v] = 'key_media_next'
-action[K_c] = 'key_media_previous'
+length = len(setup_controls)
+controls = {}
+for n in range(length):
+    controls[setup_controls[n][0]] = setup_controls[n][1]
+
+action = {}
+for n in range(length):
+    action[setup_controls[n][0]] = setup_controls[n][2]
 
 running = True
 clock = pygame.time.Clock()
@@ -164,7 +143,7 @@ while running:  # Game Loop
         screen.blit(s, (0, 0))  # (0,0) are the top-left coordinates
         draw_text(f"Controls Locked", font_atari, (180, 180, 0), 125, 220)
 
-    if Button(resolution[0]-138, resolution[1]-img_lock.get_height()/2,
+    if Button(resolution[0]-138, resolution[1]-img_lock.get_height()/1.5,
               img_lock, 1).draw() and not buttoncheck:
         buttoncheck = True
         lock_switch = True
