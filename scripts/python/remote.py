@@ -84,13 +84,12 @@ action[K_c] = 'key_media_previous'
 
 running = True
 clock = pygame.time.Clock()
-framerate = 20
+framerate = 30
 lock_controls = False
 lock_switch = False
 LeftClick = False
 RightClick = False
 buttoncheck = False
-clickcheck = False
 version = 'v0.1'
 console_feedback = ['',]
 console_feedback[0] = 'Welcome ~ PyFire Linux-TV Remote v0.1'
@@ -148,14 +147,13 @@ while running:  # Game Loop
             except:
                 console_feedback.append(f"Key not recognized: {pygame.key.name(event.key)}")
 
-    if pygame.mouse.get_pressed()[0]:
-        LeftClick = True
-    elif pygame.mouse.get_pressed()[2]:
-        RightClick = True
+        if pygame.mouse.get_pressed()[0] and not LeftClick:
+            LeftClick = True
 
-    if RightClick and not clickcheck:
-        clickcheck = True
-        lock_switch = True
+        if pygame.mouse.get_pressed()[2] and not RightClick:
+            RightClick = True
+            lock_switch = True
+
 
     screen.fill([0, 0, 0])
     screen.blit(img_remote, [resolution[0] - img_remote.get_width(), 0])
@@ -186,7 +184,6 @@ while running:  # Game Loop
             LeftClick = False
         if event.button == 3:
             RightClick = False
-            clickcheck = False
 
     pygame.display.update()
     clock.tick(framerate)  # Sets frames/sec
