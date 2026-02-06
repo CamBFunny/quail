@@ -6,7 +6,7 @@ from pygame.locals import (KEYDOWN, QUIT, KEYUP, K_LCTRL, MOUSEWHEEL,
                            K_a, K_s, K_d, K_f, K_g, K_h, K_j, K_k,
                            K_z, K_x, K_c, K_v, K_b, K_m)
 
-ip_address = f""
+ip_address = f"192.168.0.235"
 tv_ip = f"{ip_address}"
 enter_mainframe = f"adb connect"
 
@@ -86,7 +86,11 @@ running = True
 clock = pygame.time.Clock()
 framerate = 20
 lock_controls = False
+lock_switch = False
+LeftClick = False
+RightClick = False
 buttoncheck = False
+clickcheck = False
 version = 'v0.1'
 console_feedback = ['',]
 console_feedback[0] = 'Welcome ~ PyFire Linux-TV Remote v0.1'
@@ -144,14 +148,17 @@ while running:  # Game Loop
             except:
                 console_feedback.append(f"Key not recognized: {pygame.key.name(event.key)}")
 
-        if pygame.mouse.get_pressed()[0]:
-            LeftClick = True
-        elif pygame.mouse.get_pressed()[1]:
-            RightClick = True
+    if pygame.mouse.get_pressed()[0]:
+        LeftClick = True
+    elif pygame.mouse.get_pressed()[2]:
+        RightClick = True
+
+    if RightClick and not clickcheck:
+        clickcheck = True
+        lock_switch = True
 
     screen.fill([0, 0, 0])
     screen.blit(img_remote, [resolution[0] - img_remote.get_width(), 0])
-
     if lock_controls:
         s = pygame.Surface(resolution)  # the size of your rect
         s.set_alpha(235)  # alpha level
@@ -162,6 +169,10 @@ while running:  # Game Loop
     if Button(resolution[0]-138, resolution[1]-img_lock.get_height()/2,
               img_lock, 1).draw() and not buttoncheck:
         buttoncheck = True
+        lock_switch = True
+
+    if lock_switch:
+        lock_switch = False
         lock_controls = not lock_controls
 
     length = len(console_feedback)
@@ -171,6 +182,11 @@ while running:  # Game Loop
 
     if event.type == pygame.MOUSEBUTTONUP:
         buttoncheck = False
+        if event.button == 1:
+            LeftClick = False
+        if event.button == 3:
+            RightClick = False
+            clickcheck = False
 
     pygame.display.update()
     clock.tick(framerate)  # Sets frames/sec
