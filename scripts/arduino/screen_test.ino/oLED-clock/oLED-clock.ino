@@ -1,0 +1,93 @@
+// OLED SCREEN
+#include "Arduino.h"
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+#define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C
+int duration = 9000;
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// REAL-TIME CHIP
+#include "uRTCLib.h"
+// uRTCLib rtc;
+uRTCLib rtc(0x68);
+
+char daysOfTheWeek[12][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+void setup() {
+  Serial.begin(9600);
+
+  URTCLIB_WIRE.begin();
+
+  // set day of week (1=Sunday, 7=Saturday) 
+  // (sec, min, hour, dayofweek, dayofmonth, month, year)
+  // Comment out below line once you set the date & time.
+  // rtc.set(7, 20, 15, 1, 8, 2, 26);
+  
+  Serial.begin(9600);
+  
+  // Initialize the OLED object
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+  Serial.println(F("SSD1306 allocation failed"));
+  }
+  
+  // Clear the buffer
+  display.clearDisplay();
+  // Display Text
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setTextWrap(false);
+  display.setCursor(0, 0);
+  display.println("Cam's");
+  display.println("Pipboy");
+  display.display();
+  delay(2000);
+  display.clearDisplay();
+}
+
+void loop() {
+  rtc.refresh(); 
+  int year = rtc.year();
+  String check = daysOfTheWeek[rtc.month() - 1]; 
+  String month = check;
+
+  int day = rtc.day(); 
+  int hour = rtc.hour(); 
+  if (hour > 12) {
+    hour -= 12;
+  }
+
+  int minutes = rtc.minute();  
+  String minutes_string = String(minutes);
+  if (minutes < 10) {
+    minutes_string = "0" + String(minutes);
+  }    
+
+  int seconds = rtc.second(); 
+  String seconds_string = String(seconds);
+  if (seconds < 10) {
+    seconds_string = "0" + String(seconds);
+  }  
+   
+  String colon = ":";
+  String dash = "-";
+  
+  display.clearDisplay();  
+  display.setCursor(0, 0);
+  display.setTextSize(1);
+  display.println("Time");
+  display.println("");
+  display.setTextSize(2);
+  display.println(hour + colon + minutes_string + colon + seconds_string);
+  display.println("");
+  display.println(month + dash + day + "   ");
+  display.display();
+  delay(500);
+
+} 

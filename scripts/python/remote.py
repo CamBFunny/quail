@@ -68,7 +68,8 @@ lock_controls = False
 lock_switch = False
 LeftClick = False
 RightClick = False
-buttoncheck = False
+tab_check = False
+button_check = False
 version = 'v0.1'
 console_feedback = ['',]
 console_feedback[0] = 'Welcome ~ PyFire Linux-TV Remote v0.1'
@@ -120,11 +121,17 @@ def remote_control(text): # Control the television
 
 while running:  # Game Loop
     for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN and not lock_controls:
-            try:
-                remote_control(event.key)
-            except:
-                console_feedback.append(f"Key not recognized: {pygame.key.name(event.key)}")
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_TAB and not tab_check:
+                tab_check = True
+                lock_controls = not lock_controls
+            elif not lock_controls:
+                try:
+                    remote_control(event.key)
+                except:
+                    console_feedback.append(f"Key not recognized: {pygame.key.name(event.key)}")
 
         if pygame.mouse.get_pressed()[0] and not LeftClick:
             LeftClick = True
@@ -144,8 +151,8 @@ while running:  # Game Loop
         draw_text(f"Controls Locked", font_atari, (180, 180, 0), 125, 220)
 
     if Button(resolution[0]-138, resolution[1]-img_lock.get_height()/1.5,
-              img_lock, 1).draw() and not buttoncheck:
-        buttoncheck = True
+              img_lock, 1).draw() and not button_check:
+        button_check = True
         lock_switch = True
 
     if lock_switch:
@@ -157,8 +164,12 @@ while running:  # Game Loop
         draw_text(f"{console_feedback[n]}", font_mono, (50, 235, 50),
                   10, resolution[1] - font_size *length*1.1 + font_size *n*1.1)
 
+    if event.type == pygame.KEYUP:
+        if event.key == K_TAB:
+            tab_check = False
+
     if event.type == pygame.MOUSEBUTTONUP:
-        buttoncheck = False
+        button_check = False
         if event.button == 1:
             LeftClick = False
         if event.button == 3:

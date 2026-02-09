@@ -98,12 +98,15 @@ def game_over():
     # quit the program
     quit()
 
+running = True
 
 # Main Function
-while True:
+while running:
 
     # handling key events
     for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False  # Be IDLE friendly
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 change_to = 'UP'

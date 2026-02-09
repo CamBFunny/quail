@@ -127,6 +127,8 @@ if debug:
 
 while running:  # Game Loop
     for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False  # Be IDLE friendly
         if pygame.mouse.get_pressed()[0]:
             LeftClick = True
         elif pygame.mouse.get_pressed()[1]:
