@@ -1,46 +1,41 @@
 #include <iostream>
+#include <chrono>
+#include <thread> // Included for the sleep function in the example
 #include <unistd.h> // in linux: sleep()
 
-// #include <windows.h> // in windows: Sleep()
-
-
-using namespace std;
-
-void displayTime(int hours, int minutes, int seconds) {
-   // for linux
-   system("clear"); 
-
-   // for windows
-   // system("cls");
-
-   cout << hours << ":"
-        << minutes << ":"
-        << seconds << endl;
-}
-
 int main() {
-  int hour = 0;
-  int min = 0;
-  int sec = 0;
+    // Record the time point when the program starts
+    auto program_start_time = std::chrono::high_resolution_clock::now();
+    int delta_time = 0;
+    int seconds = 0;
+    int minutes = 0;
+    int hours = 0;
+    int reference_frame = 0;
+    
+    while (true) {
 
-  displayTime(hour, min, sec);
+    // --- Your program's code goes here ---
+    system("clear"); 
+    std::cout << "Program running...\n"; 
+    // Capture the current time
+    auto current_time = std::chrono::high_resolution_clock::now();
 
-  while(true) {
-    sleep(1);
+    // Calculate the duration elapsed since the program started
+    auto duration = current_time - program_start_time; 
 
-    sec++;
+    // Cast the duration to milliseconds and get the count
+    auto milliseconds_since_start = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();  
 
-    if(sec > 59) {
-      min++;
-      sec = 0;
-    } 
-
-    if(min > 59) {
-      hour++;
-      sec = 0;
-      min = 0;
+    // Convert to milliseconds and store as integer (long long recommended)
+    long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count(); 
+    int delta_time = ms - reference_frame;
+    
+    printf("%d\n", ms);
+    if (ms >= 1000);
+    
+    std::cout << "Time since program started: " << milliseconds_since_start << " milliseconds." << std::endl;
+    
+    // Simulate time passing
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
-
-    displayTime(hour, min, sec);
-  }
 }
