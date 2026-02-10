@@ -46,13 +46,28 @@ int main() {
     if (minutes >= 60) {
         hours++;
         minutes = minutes - 60;
-    } 
-    
-    if (seconds >= 10) {
-        printf("%d:%d.", minutes, seconds);
-    } else {
-        printf("%d:0%d.", minutes, seconds);
     }
+    
+    if (hours > 0) {
+        printf("%d:", hours);
+        if (minutes < 10) {
+            printf("0%d:", minutes);
+        } else {
+            printf("%d:", minutes);
+        }
+        if (seconds >= 10) {
+            printf("%d.", seconds);
+        } else {
+            printf("0%d.", seconds);
+        }
+    } else {
+        if (seconds >= 10) {
+            printf("%d:%d.", minutes, seconds);
+        } else {
+            printf("%d:0%d.", minutes, seconds);
+        }
+    }
+    
     if (ms < 10) {
         printf("00%d\n", ms);
     } else if (10 <= ms && ms < 100) {
