@@ -83,6 +83,8 @@ void loop() {
   display.clearDisplay();  
   display.setCursor(7, 2);
   display.setTextSize(1);
+  display.println("Date");
+  display.setCursor(7, 16);
   display.println("Time");
   display.setCursor(70, 1);
   if (day > 9) {
@@ -90,9 +92,9 @@ void loop() {
   }
   display.setTextSize(2);
   display.println(month + dash + day + "   ");
-  
-  int x = 12;
-  int y = 28;
+
+  constexpr int x = 12;
+  int y = 32;
   int adjust = 0;
   if (hour > 9) {
     adjust = adjust + 9;
