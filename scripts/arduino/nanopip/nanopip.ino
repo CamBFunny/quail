@@ -108,5 +108,6 @@ void loop() {
   display.println(colon + seconds_string);
   display.display();
   delay(250);
+  Serial.print(hour + colon + minutes_string + colon + seconds_string);
 
 }

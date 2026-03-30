@@ -28,8 +28,8 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
-int light_on = 1700;    // milliseconds
-int light_off = (2000 - light_on) / 3;   // milliseconds
+int light_on = 2600;    // milliseconds
+int light_off = (3000 - light_on) / 3;   // milliseconds
 
 // the loop function runs over and over again forever
 void loop() {
