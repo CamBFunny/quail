@@ -16,6 +16,7 @@ int counter = 0;
 void setup() {
   // put your setup code here, to run once:
   display.begin(); 
+  display.setContrast(50);
 }
 
 void loop() {
