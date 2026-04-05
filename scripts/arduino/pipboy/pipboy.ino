@@ -51,10 +51,10 @@ uint16_t SCREEN_HEIGHT;
 // Watch dimensions
 const int CENTER_X = 120;
 const int CENTER_Y = 120;
-const int RADIUS = 110;
-const int HOUR_LEN = 38;
-const int MIN_LEN = 50;
-const int SEC_LEN = 60;
+const int RADIUS = 115;
+const int HOUR_LEN = 35;
+const int MIN_LEN = 52;
+const int SEC_LEN = 62;
 
 float prevHourAngle = -1000, prevMinAngle = -1000, prevSecAngle = -1000;
 int prevDispHour = -1, prevDispMin = -1, prevDispSec = -1;
@@ -79,9 +79,23 @@ void drawTicks() {
   TFT_display.setTextColor(COLOR_TICKS, COLOR_BACKGROUND);
   TFT_display.setTextSize(2);
   for (int h = 1; h <= 12; h++) {
+    // Watch number positions
     float angle = (h * 30) * M_PI / 180.0;
     int tx = CENTER_X + (RADIUS - 38) * cos(angle - M_PI / 2) - 10;
     int ty = CENTER_Y + (RADIUS - 38) * sin(angle - M_PI / 2) - 8;
+    if (h == 3) {
+      tx = tx + 10;
+      ty = ty + 1;
+    }
+    if (h == 2 || h == 4) {
+      tx = tx + 7;
+    }
+    if (h == 1 || h == 5 || h == 6 || h == 7 || h == 8) {
+      tx = tx + 5;
+    }
+    if (h == 9) {
+      ty = ty + 1;
+    }
     TFT_display.setCursor(tx, ty);
     TFT_display.print(h);
   }
@@ -111,6 +125,7 @@ void setup() {
   Serial.begin(9600); 
   TFT_display.begin();
 
+  // Splash screen
   SCREEN_WIDTH = TFT_display.width();
   SCREEN_HEIGHT = TFT_display.height();
 
@@ -120,10 +135,9 @@ void setup() {
   int x = (SCREEN_WIDTH - img_width) / 2;
   int y = (SCREEN_HEIGHT - img_height) / 2;
 
-  TFT_display.fillScreen(WHITE);
-  TFT_display.drawRGBBitmap(x, y, myBitmap, img_width, img_height); 
-
-  delay(1000);
+  // TFT_display.fillScreen(WHITE);
+  // TFT_display.drawRGBBitmap(x, y, myBitmap, img_width, img_height); 
+  // delay(1000);
   
   TFT_display.fillScreen(COLOR_BACKGROUND);
 
@@ -143,6 +157,9 @@ void setup() {
 
   // Clock setup
   URTCLIB_WIRE.begin();
+  // rtc.set(7, 57, 14, 6, 3, 4, 26);
+  // rtc.set(second, minute, hour, dayOfWeek, dayOfMonth, month, year)
+  // set day of week (1=Sunday, 7=Saturday)
   
 }
 
@@ -183,30 +200,15 @@ void loop() {
   
     float hourAngle = (hour + min / 60.0) * 30 * M_PI / 180.0;
     float minAngle = (min + sec / 60.0) * 6 * M_PI / 180.0;
-    float secAngle = sec * 6 * M_PI / 180.0;
-  
-    // Hour hand (jumps), redraw when angle changed
-    if (dispHour != prevDispHour) {
-      if (prevHourAngle > -900)
-        drawHand(CENTER_X, CENTER_Y, prevHourAngle, HOUR_LEN, COLOR_BACKGROUND, 3);  // clear old position
-      drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 3);
+    float secAngle = sec * 6 * M_PI / 180.0;  
       
-      prevHourAngle = hourAngle;
-      prevDispHour = dispHour;
-    }
-  
-    if (dispSec - (dispHour%12)*5 == 9 || seconds == 0) {
-      drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 3);
-    }
-  
-    if (dispSec - dispMin == 3 || seconds == 0) {
-      drawHand(CENTER_X, CENTER_Y, minAngle, MIN_LEN, COLOR_MINUTE, 2);
-    }
-  
     // Minute hand (jumps)
-    if (dispMin != prevDispMin) {
+    if (dispMin != prevDispMin) { 
       if (prevMinAngle > -900)
-        drawHand(CENTER_X, CENTER_Y, prevMinAngle, MIN_LEN, COLOR_BACKGROUND, 2);  // clear old position
+        for (int h = 1; h <= 50; h++) {
+          float wave = (min + (sec - h) / 60.0) * 6 * M_PI / 180.0;
+          drawHand(CENTER_X, CENTER_Y, wave, MIN_LEN, COLOR_BACKGROUND, 2);  // clear old position
+        }
       drawHand(CENTER_X, CENTER_Y, minAngle, MIN_LEN, COLOR_MINUTE, 2);
       
       prevDispMin = dispMin;
@@ -236,6 +238,24 @@ void loop() {
         Serial.print("0");
       } 
       Serial.println(number);
+    }
+    
+    // Hour hand (jumps), redraw when angle changed
+    if (dispHour != prevDispHour) {
+      if (prevHourAngle > -900)
+        drawHand(CENTER_X, CENTER_Y, prevHourAngle, HOUR_LEN, COLOR_BACKGROUND, 3);  // clear old position
+      drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 3);
+      
+      prevHourAngle = hourAngle;
+      prevDispHour = dispHour;
+    }
+  
+    if (dispSec - (dispHour%12)*5 == 9 || seconds == 0) {
+      drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 3);
+    }
+  
+    if (dispSec - dispMin == 3 || seconds == 0) {
+      drawHand(CENTER_X, CENTER_Y, minAngle, MIN_LEN, COLOR_MINUTE, 2);
     }
   
     // Second hand (smooth)

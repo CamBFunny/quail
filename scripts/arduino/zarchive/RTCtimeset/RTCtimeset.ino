@@ -13,7 +13,7 @@ void setup() {
 
   // Comment out below line once you set the date & time.
   // Following line sets the RTC with an explicit date & time 
-  rtc.set(5, 19, 23, 5, 2, 4, 26);
+  // rtc.set(7, 57, 14, 6, 3, 4, 26);
   // rtc.set(second, minute, hour, dayOfWeek, dayOfMonth, month, year)
   // set day of week (1=Sunday, 7=Saturday)
 }
