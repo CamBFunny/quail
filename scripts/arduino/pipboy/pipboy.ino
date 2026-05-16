@@ -5,17 +5,17 @@
 
 #include <DIYables_TFT_Round.h>
 #include <math.h>
-#include "bitmap.h"
+#include "bitmap.h" 
 
 // REAL-TIME CHIP
 #include <SPI.h>
 #include <Wire.h>
 #include "uRTCLib.h"
+
 // uRTCLib rtc;
 uRTCLib rtc(0x68);
-char daysOfTheWeek[12][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
-#define WHITE     DIYables_TFT::colorRGB(255, 255, 255)
+char Months[12][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+char daysOfTheWeek[7][4] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
 #define PIN_RST 8 // The Arduino pin connected to the RST pin of the circular TFT display
 #define PIN_DC  9 // The Arduino pin connected to the DC pin of the circular TFT display
@@ -51,13 +51,16 @@ uint16_t SCREEN_HEIGHT;
 // Watch dimensions
 const int CENTER_X = 120;
 const int CENTER_Y = 120;
-const int RADIUS = 115;
+const int RADIUS = 113;
 const int HOUR_LEN = 35;
 const int MIN_LEN = 52;
 const int SEC_LEN = 62;
 
 float prevHourAngle = -1000, prevMinAngle = -1000, prevSecAngle = -1000;
 int prevDispHour = -1, prevDispMin = -1, prevDispSec = -1;
+
+int loop_counter = 0;
+int draw_second = -1;
 
 void drawHand(int x, int y, float angle, int length, uint16_t color, int width) {
   int x2 = x + length * cos(angle - M_PI / 2);
@@ -95,6 +98,9 @@ void drawTicks() {
     }
     if (h == 9) {
       ty = ty + 1;
+    }
+    if (h == 4 || h == 5 || h == 6 || h == 7 || h == 8) {
+      ty = ty + 2;
     }
     TFT_display.setCursor(tx, ty);
     TFT_display.print(h);
@@ -135,7 +141,7 @@ void setup() {
   int x = (SCREEN_WIDTH - img_width) / 2;
   int y = (SCREEN_HEIGHT - img_height) / 2;
 
-  // TFT_display.fillScreen(WHITE);
+  // TFT_display.fillScreen(CLR_WHITE);
   // TFT_display.drawRGBBitmap(x, y, myBitmap, img_width, img_height); 
   // delay(1000);
   
@@ -156,14 +162,15 @@ void setup() {
   prevDispSec = -1;
 
   // Clock setup
-  URTCLIB_WIRE.begin();
-  // rtc.set(7, 57, 14, 6, 3, 4, 26);
+  URTCLIB_WIRE.begin(); 
+  // rtc.set(10, 57, 10, 1, 5, 4, 26);
   // rtc.set(second, minute, hour, dayOfWeek, dayOfMonth, month, year)
-  // set day of week (1=Sunday, 7=Saturday)
+  // set day of week (1=Sunday, 7=Saturday) 
   
+  Serial.println("Setup complete");
 }
 
-void loop() {
+void loop() { 
   // Check time
   rtc.refresh();
   int year = rtc.year();
@@ -187,7 +194,10 @@ void loop() {
   if (seconds < 10) {
     seconds_string = "0" + String(seconds);
   } 
-   
+
+  if (loop_counter == 0) {
+    int draw_second = seconds;
+  }
 
   if (minutes >= 0 && minutes <= 60 && day <= 31 && year < 30) {
     float sec = fmod(seconds, 60.0);
@@ -201,63 +211,7 @@ void loop() {
     float hourAngle = (hour + min / 60.0) * 30 * M_PI / 180.0;
     float minAngle = (min + sec / 60.0) * 6 * M_PI / 180.0;
     float secAngle = sec * 6 * M_PI / 180.0;  
-      
-    // Minute hand (jumps)
-    if (dispMin != prevDispMin) { 
-      if (prevMinAngle > -900)
-        for (int h = 1; h <= 50; h++) {
-          float wave = (min + (sec - h) / 60.0) * 6 * M_PI / 180.0;
-          drawHand(CENTER_X, CENTER_Y, wave, MIN_LEN, COLOR_BACKGROUND, 2);  // clear old position
-        }
-      drawHand(CENTER_X, CENTER_Y, minAngle, MIN_LEN, COLOR_MINUTE, 2);
-      
-      prevDispMin = dispMin;
-      prevMinAngle = minAngle;
-      
-      Serial.print("Current Date & Time: ");
-      Serial.print(day);
-      Serial.print('/');
-      Serial.print(rtc.month());
-      Serial.print('/');
-      Serial.print(rtc.year());
-    
-      Serial.print(" (");
-      Serial.print(daysOfTheWeek[rtc.dayOfWeek() - 1]);
-      Serial.print(") ");
-    
-      Serial.print(rtc.hour());
-      Serial.print(':');
-      int minute = rtc.minute(); 
-      if (minute < 10) {
-        Serial.print("0");
-      } 
-      Serial.print(minute);
-      Serial.print(':');
-      int number = rtc.second(); 
-      if (number < 10) {
-        Serial.print("0");
-      } 
-      Serial.println(number);
-    }
-    
-    // Hour hand (jumps), redraw when angle changed
-    if (dispHour != prevDispHour) {
-      if (prevHourAngle > -900)
-        drawHand(CENTER_X, CENTER_Y, prevHourAngle, HOUR_LEN, COLOR_BACKGROUND, 3);  // clear old position
-      drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 3);
-      
-      prevHourAngle = hourAngle;
-      prevDispHour = dispHour;
-    }
-  
-    if (dispSec - (dispHour%12)*5 == 9 || seconds == 0) {
-      drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 3);
-    }
-  
-    if (dispSec - dispMin == 3 || seconds == 0) {
-      drawHand(CENTER_X, CENTER_Y, minAngle, MIN_LEN, COLOR_MINUTE, 2);
-    }
-  
+
     // Second hand (smooth)
     if (dispSec != prevDispSec) {
       if (prevSecAngle > -900)
@@ -269,11 +223,83 @@ void loop() {
       prevDispSec = dispSec;
       prevSecAngle = secAngle;
     }
+    
+    if (draw_second != seconds) {
+      if (dispSec % 15 == 0 || loop_counter == 0) {
+        int draw_second = seconds;
+        // Minute hand (jumps)
+        for (int h = 5; h <= 8; h++) {
+          float wave = (min + (sec - h*8) / 60.0) * 6 * M_PI / 180.0;
+          drawHand(CENTER_X, CENTER_Y, wave, MIN_LEN, COLOR_BACKGROUND, 3);  // clear old position
+          drawHand(CENTER_X, CENTER_Y, minAngle, MIN_LEN, COLOR_MINUTE, 2);
+          drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 5);
+        }
+        
+        TFT_display.fillCircle(CENTER_X, CENTER_Y, 4, COLOR_SECOND);  // Redraw center dot
+        drawHand(CENTER_X, CENTER_Y, secAngle, SEC_LEN, COLOR_SECOND, 1);
+        prevDispMin = dispMin;
+        prevMinAngle = minAngle;
+        
+        Serial.print("Current Date & Time: ");
+        Serial.print(Months[rtc.month()]);
+        Serial.print('-');
+        Serial.print(day);
+        Serial.print(' ');
+        Serial.print(rtc.year());
+      
+        Serial.print(" (");
+        Serial.print(daysOfTheWeek[rtc.dayOfWeek()]);
+        Serial.print(") ");
+      
+        Serial.print(rtc.hour());
+        Serial.print(':');
+        int minute = rtc.minute(); 
+        if (minute < 10) {
+          Serial.print("0");
+        } 
+        Serial.print(minute);
+        Serial.print(':');
+        int number = rtc.second(); 
+        if (number < 10) {
+          Serial.print("0");
+        } 
+        Serial.println(number);
+      
+        // Hour hand
+        float back_Angle = (hour + (min - 16) / 60.0) * 30 * M_PI / 180.0;
+        drawHand(CENTER_X, CENTER_Y, back_Angle, HOUR_LEN, COLOR_BACKGROUND, 5);  // clear old position
+        for (int h = 1; h <= 4; h++) {
+          float waveAngle = (hour + (min - h)/ 60.0) * 30 * M_PI / 180.0;
+          float front_waveAngle = (hour + (min + h)/ 60.0) * 30 * M_PI / 180.0;
+          drawHand(CENTER_X, CENTER_Y, waveAngle, HOUR_LEN, COLOR_HOUR, 5);
+          drawHand(CENTER_X, CENTER_Y, front_waveAngle, HOUR_LEN, COLOR_HOUR, 5);
+        }
+        
+        TFT_display.fillCircle(CENTER_X, CENTER_Y, 4, COLOR_SECOND);  // Redraw center dot
+        drawHand(CENTER_X, CENTER_Y, secAngle, SEC_LEN, COLOR_SECOND, 1);
+        
+        prevHourAngle = hourAngle;
+        prevDispHour = dispHour;
+      }
+    }
+  
+    if (dispSec - (dispHour%12)*5 == 9 || seconds == 0) {
+      drawHand(CENTER_X, CENTER_Y, hourAngle, HOUR_LEN, COLOR_HOUR, 3);
+    }
+  
+    if (dispSec - dispMin == 3 || seconds == 0) {
+      drawHand(CENTER_X, CENTER_Y, minAngle, MIN_LEN, COLOR_MINUTE, 2);
+    }
+
+    
+    if (dispSec % 15 == 0) {
+      delay(500);
+    }
   }
   else {
     Serial.println("Missed bits!!!!!!!!"); 
   }
-  
 
-  delay(50);
+  loop_counter++;
+  delay(100);
 }

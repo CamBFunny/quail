@@ -15,7 +15,7 @@ def say(text):
     engine.runAndWait()
     engine.stop()
 
-say(input('Say something: '))
+# say(input('Say something: '))
 
 # # Saving Voice to a file
 # engine.save_to_file('', 'tmp/test.mp3')
