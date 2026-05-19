@@ -6,7 +6,7 @@ version = f"{sys.version}"
 
 def say(text):
     # RATE
-    rate = 160
+    rate = 170
     engine.setProperty('rate', rate)
     # VOLUME
     engine.setProperty('volume', 1)

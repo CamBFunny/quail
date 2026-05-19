@@ -51,8 +51,7 @@ text_box.grid(row=5, column=0, columnspan = 2)
 btn = Button(root, text = "Quit", fg = "black", command=root.quit)
 btn.grid(column= 99, row=99)
 
-sys.path.append("python/TTS")
-from pytext import say
+from scripts.python.TTS.pytext import say
 
 def submit_text():
     os.chdir("/home/cameron/PycharmProjects/quail/scripts/python/TTS")
